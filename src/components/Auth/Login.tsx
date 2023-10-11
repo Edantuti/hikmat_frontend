@@ -7,7 +7,7 @@ import { changeAuthentication, setUserData } from "../../slice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PasswordInput from "./PasswordInput";
 import { setProducts } from "../../slice/CartSlice";
-
+import.meta.env
 export type FormValues = {
   email: string;
   password: string;
@@ -30,7 +30,7 @@ const Login: FC = (): JSX.Element => {
   const onSubmit = async (data: any) => {
     try {
       const post = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        `${import.meta.env.VITE_BACKEND}/api/auth/login`,
         {
           email: data.email,
           password: data.password,
@@ -49,7 +49,7 @@ const Login: FC = (): JSX.Element => {
       });
       if (post.status == 200) {
         dispatch(changeAuthentication(true));
-        const { data } = await axios.get("http://localhost:5000/api/cart/", {
+        const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/cart`, {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },

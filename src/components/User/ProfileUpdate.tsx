@@ -12,7 +12,7 @@ type FormValues = {
   email: string;
   phone: string;
 };
-
+import.meta.env
 export default function ProfileUpdate() {
   const { register, setValue, handleSubmit } = useForm<FormValues>({
     defaultValues: {},
@@ -41,7 +41,7 @@ export default function ProfileUpdate() {
       formdata.set("first", profileData.first);
       formdata.set("email", profileData.email);
       formdata.set("phone", profileData.phone);
-      const { data } = await axios.post("http://localhost:5000/api/auth/update", formdata, {
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND}/api/auth/update`, formdata, {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },

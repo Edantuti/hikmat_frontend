@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from "react";
-
+import.meta.env
 import ProductCard from "../components/ProductList/ProductCard";
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import.meta.env
 const ProductListPage: FC = (): JSX.Element => {
   const products = useLoaderData() as any;
   const [nextPage, setNextPages] = useState<number[]>([]);
@@ -36,11 +37,11 @@ const ProductListPage: FC = (): JSX.Element => {
     setParams([["offset", ((value - 1) * 12) + ""]])
   };
   async function retrieveBrands() {
-    return axios.get("http://localhost:5000/api/brands")
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/brands`)
   }
 
   async function retrieveCategory() {
-    return axios.get("http://localhost:5000/api/categories")
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/categories`)
   }
   return (
     <>

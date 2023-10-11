@@ -1,6 +1,6 @@
 import axios from "axios"
 import Cookies from "js-cookie"
-
+import.meta.env
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from "react-toastify"
 
@@ -15,7 +15,7 @@ export default function BrandAdding() {
     try {
       const formdata = new FormData()
       formdata.append("name", d.name)
-      await axios.post("http://localhost:5000/api/admin/brands", formdata, {
+      await axios.post(`${import.meta.env.VITE_BACKEND}/api/admin/brands`, formdata, {
         headers: {
           "Authorization": `Bearer ${Cookies.get("token")}`
         }

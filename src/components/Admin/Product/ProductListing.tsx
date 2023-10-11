@@ -5,14 +5,14 @@ import { useDispatch } from 'react-redux'
 import Cookies from "js-cookie"
 import { Link, useLoaderData } from 'react-router-dom'
 import { changeAuthentication } from '../../../slice/AuthSlice'
-
+import.meta.env
 const ProductListing: FC = () => {
   const data = useLoaderData() as any
   const [rows, setRows] = useState<any[]>(data.rows)
   const dispatch = useDispatch()
   async function removeProduct(id: string) {
     try {
-      await axios.delete('http://localhost:5000/api/products', {
+      await axios.delete(`${import.meta.env.VITE_BACKEND}/api/products`, {
         params: {
           id: id,
         },

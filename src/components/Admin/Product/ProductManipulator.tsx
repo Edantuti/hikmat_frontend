@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { RxCross2 } from "react-icons/rx";
-
+import.meta.env
 import ProductCarousel from "../../ProductView/ProductCarousel";
 import ProductDescription from "../../ProductView/ProductDescription";
 import ProductInfo from "../../ProductView/ProductInfo";
@@ -75,7 +75,7 @@ const ProductManipulator: FC = (): JSX.Element => {
   });
   async function getProduct(id: string) {
     return (
-      await axios.get("http://localhost:5000/api/products/", {
+      await axios.get(`${import.meta.env.VITE_BACKEND}/api/products/`, {
         params: {
           id: id,
         },
@@ -87,7 +87,7 @@ const ProductManipulator: FC = (): JSX.Element => {
   }
   async function getProductList() {
     return (
-      await axios.get("http://localhost:5000/api/products/", {
+      await axios.get(`${import.meta.env.VITE_BACKEND}/api/products/`, {
         params: {
           limit: 100000,
         },
@@ -117,7 +117,7 @@ const ProductManipulator: FC = (): JSX.Element => {
           );
         } else formdata.append("photos", photo);
       }
-      await axios.patch("http://localhost:5000/api/products", formdata, {
+      await axios.patch(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
         params: {
           id: productid,
         },

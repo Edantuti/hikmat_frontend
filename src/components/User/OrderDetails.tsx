@@ -5,7 +5,7 @@ import { FaCheck, FaHourglass } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../../slice/CartSlice";
 import { changeAuthentication, setUserData } from "../../slice/AuthSlice";
-
+import.meta.env
 const OrderDetails: FC = (): JSX.Element => {
   const user = useSelector((state: any) => state.auth.userData);
   const dispatch = useDispatch();
@@ -16,7 +16,7 @@ const OrderDetails: FC = (): JSX.Element => {
   }, []);
   function retrieveOrders() {
     axios
-      .get("http://localhost:5000/api/orders", {
+      .get(`${import.meta.env.VITE_BACKEND}/api/orders`, {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
@@ -63,7 +63,7 @@ function OrderItem(props: any) {
   async function cancelOrder(e: any) {
     e.currentTarget.checked = true;
     const { data } = await axios.patch(
-      "http://localhost:5000/api/orders/delivered",
+      `${import.meta.env.VITE_BACKEND}/api/orders/delivered`,
       { cancelled: true },
       {
         params: {

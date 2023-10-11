@@ -41,7 +41,7 @@ import ForgotPassword from "./components/Auth/ForgotPassword.tsx";
 import DealsListing from "./components/Admin/Deals/DealsListing.tsx";
 import DealsAdding from "./components/Admin/Deals/DealsAdding.tsx";
 import DealsManipulation from "./components/Admin/Deals/DealsManipulation.tsx";
-
+import.meta.env
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -53,7 +53,7 @@ const router = createBrowserRouter(
           loader={async ({ request }) => {
             const url = new URL(request.url);
             return (
-              await axios.get("http://localhost:5000/api/products", {
+              await axios.get(`${import.meta.env.VITE_BACKEND}/api/products`, {
                 params: {
                   category: url.searchParams.get("category"),
                   brand: url.searchParams.get("brand"),
@@ -68,7 +68,7 @@ const router = createBrowserRouter(
           path="/product/:productId"
           loader={async ({ params }) => {
             const data = await axios.get(
-              `http://localhost:5000/api/products/?id=${params.productId}`,
+              `${import.meta.env.VITE_BACKEND}/api/products/?id=${params.productId}`,
             );
             return data.data.result.rows[0];
           }}
@@ -88,7 +88,7 @@ const router = createBrowserRouter(
             async () => {
               try {
                 const { data } = await axios.get(
-                  "http://localhost:5000/api/cart/",
+                  `${import.meta.env.VITE_BACKEND}/api/cart/`,
                   {
                     headers: {
                       Authorization: `Bearer ${Cookies.get("token")}`,
@@ -125,7 +125,7 @@ const router = createBrowserRouter(
         <Route
           path="/admin/product"
           loader={async () => {
-            const data = (await axios.get("http://localhost:5000/api/products", {
+            const data = (await axios.get(`${import.meta.env.VITE_BACKEND}/api/products`, {
               params: { limit: 100000 }
             }))
               .data.result;
@@ -146,7 +146,7 @@ const router = createBrowserRouter(
           loader={async () => {
             try {
               const data = (
-                await axios.get("http://localhost:5000/api/orders/all", {
+                await axios.get(`${import.meta.env.VITE_BACKEND}/api/orders/all`, {
                   headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
                   },

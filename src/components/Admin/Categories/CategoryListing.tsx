@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-// import { useCookies } from "react-cookie"
+import.meta.env
 import Cookies from "js-cookie"
 import { RxCross2 } from "react-icons/rx"
 import { changeAuthentication } from "../../../slice/AuthSlice"
@@ -13,11 +13,11 @@ export default function CategoryListing() {
     getCategories().then((response) => setData(response.data.result))
   }, [])
   function getCategories() {
-    return axios.get("http://localhost:5000/api/categories")
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/categories`)
   }
   function deleteCategory(id: string) {
     try {
-      axios.delete("http://localhost:5000/api/admin/categories", {
+      axios.delete(`${import.meta.env.VITE_BACKEND}/api/admin/categories`, {
         params: {
           id: id
         },

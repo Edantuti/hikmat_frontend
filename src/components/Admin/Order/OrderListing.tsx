@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { changeAuthentication } from '../../../slice/AuthSlice'
+import.meta.env
 //TODO:Add Toast
 const OrderListing: FC = (): JSX.Element => {
   const data = useLoaderData() as any
@@ -26,7 +27,7 @@ function OrderComponent(props: any) {
   const [dtdc, setDTDC] = useState<string>(props.dtdcid)
   const dispatch = useDispatch()
   async function changeDeliveredStatus(id: string) {
-    const { data } = await axios.patch("http://localhost:5000/api/orders/delivered", { delivered: !deliverStatus }, {
+    const { data } = await axios.patch(`${import.meta.env.VITE_BACKEND}/api/orders/delivered`, { delivered: !deliverStatus }, {
       params: {
         id: id
       },
@@ -43,7 +44,7 @@ function OrderComponent(props: any) {
     setDTDC(e.target.value)
   }
   function submitDTDC(id: string) {
-    axios.patch("http://localhost:5000/api/orders/", { dtdcid: dtdc }, {
+    axios.patch(`${import.meta.env.VITE_BACKEND}/api/orders/`, { dtdcid: dtdc }, {
       params: {
         id: id
       },

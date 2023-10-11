@@ -4,6 +4,7 @@ import Cookies from 'js-cookie'
 import { RxCross1 } from "react-icons/rx";
 import { changeAuthentication } from "../../../slice/AuthSlice";
 import { useDispatch } from "react-redux";
+import.meta.env
 //TODO:Add Toast
 export default function DealsListing() {
   const [data, setData] = useState<any[]>([]);
@@ -14,7 +15,7 @@ export default function DealsListing() {
     })
   }, [])
   async function getDeals() {
-    return axios.get("http://localhost:5000/api/deals", {
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/deals`, {
       headers: {
         'Authorization': `Bearer ${Cookies.get("token")}`
       }
@@ -22,7 +23,7 @@ export default function DealsListing() {
   }
   async function removeDeals(id: string) {
     try {
-      await axios.delete("http://localhost:5000/api/deals", {
+      await axios.delete(`${import.meta.env.VITE_BACKEND}/api/deals`, {
         headers: {
           'Authorization': `Bearer ${Cookies.get("token")}`
         },

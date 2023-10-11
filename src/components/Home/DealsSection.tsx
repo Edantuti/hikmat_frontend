@@ -1,6 +1,7 @@
 import axios from "axios"
 import { FC, useEffect, useState } from "react"
 import ProductCard from "../ProductList/ProductCard"
+import.meta.env
 //TODO:Deal Section Product improvement
 const DealsSection: FC = (): JSX.Element => {
   const [deals, setDeals] = useState<any>([])
@@ -10,7 +11,7 @@ const DealsSection: FC = (): JSX.Element => {
     })
   }, [])
   async function getDeals() {
-    return axios.get("http://localhost:5000/api/deals")
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/deals`)
   }
   function checkDealsExpiry(date: string) {
     return new Date(date) >= new Date()

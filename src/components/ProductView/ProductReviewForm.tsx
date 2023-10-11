@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import { useState } from "react"
 import { FaRegStar, FaStar } from "react-icons/fa"
 import Cookies from "js-cookie"
+import.meta.env
 
 export default function ProductReviewForm(props: { productid: string, data: { count: number, rows: any[] } }): JSX.Element {
   const userData = useSelector((state: any) => state.auth.userData)
@@ -20,7 +21,7 @@ export default function ProductReviewForm(props: { productid: string, data: { co
       const formdata = new FormData()
       formdata.append("description", d.description)
       formdata.append("rating", d.rating)
-      await axios.post("http://localhost:5000/api/products/reviews", formdata, {
+      await axios.post(`${import.meta.env.VITE_BACKEND}/api/products/reviews`, formdata, {
         params: {
           id: props.productid,
           userId: userData.userid

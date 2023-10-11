@@ -1,6 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-// import { useCookies } from "react-cookie"
+import.meta.env
 import Cookies from "js-cookie"
 import { RxCross2 } from "react-icons/rx"
 
@@ -11,11 +11,11 @@ export default function BrandListing() {
     getBrands().then((response) => setData(response.data.result))
   }, [])
   function getBrands() {
-    return axios.get("http://localhost:5000/api/brands")
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/brands`)
   }
   function deleteBrand(id: string) {
     try {
-      axios.delete("http://localhost:5000/api/admin/brands", {
+      axios.delete(`${import.meta.env.VITE_BACKEND}/api/admin/brands`, {
         params: {
           id: id
         },

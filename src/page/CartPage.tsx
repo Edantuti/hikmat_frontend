@@ -11,6 +11,8 @@ import { MdOutlineShoppingCartCheckout } from "react-icons/md"
 import PageRedirect from "../components/Auth/PageRedirect";
 import { changeAuthentication } from "../slice/AuthSlice";
 
+import.meta.env
+
 const CartPage: FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const cart = useSelector((state: any) => {
@@ -25,7 +27,7 @@ const CartPage: FC = (): JSX.Element => {
 
   const cartRetrieve = async () => {
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/cart/`, {
+      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/cart/`, {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
@@ -56,7 +58,7 @@ const CartPage: FC = (): JSX.Element => {
     }
   };
   const removeCartItem = async (id: string) => {
-    await axios.delete(`http://localhost:5000/api/cart`, {
+    await axios.delete(`${import.meta.env.VITE_BACKEND}/api/cart`, {
       params: {
         id: id,
       },

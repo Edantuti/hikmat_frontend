@@ -14,20 +14,19 @@ export default function DealsAdding() {
   const { register, handleSubmit } = useForm<FormValues>({
     reValidateMode: "onBlur"
   })
-  const [url] = useState<string>("http://localhost:5000")
   const [products, setProducts] = useState<any[]>([]);
   useEffect(() => {
     getProducts().then((response) => setProducts(response.data.result.rows))
   }, [])
   async function getProducts() {
-    return axios.get("http://localhost:5000/api/products", {
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/products`, {
       params: {
         limit: 10000
       }
     })
   }
   function onSubmit(data: FormValues) {
-    axios.post(`${url}/api/deals`, { name: data.name, discount: data.discount, productId: data.productId, expiry_date: data.date }, { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }).then(() => {
+    axios.post(`${import.meta.env.VITE_BACKEND}/api/deals`, { name: data.name, discount: data.discount, productId: data.productId, expiry_date: data.date }, { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }).then(() => {
       toast.success("Your deal has been added.")
     }).catch((error) => {
       console.error(error)

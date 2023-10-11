@@ -12,7 +12,7 @@ const ArrivalsSection: FC = (): JSX.Element => {
     })
   }, [])
   async function retrieveCategory() {
-    return axios.get("http://localhost:5000/api/categories")
+    return axios.get(`${import.meta.env.VITE_BACKEND}/api/categories`)
   }
   const settings = () => {
     return {

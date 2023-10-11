@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
-
+import.meta.env
 type FormValues = {
   email: string
 }
@@ -11,7 +11,7 @@ export default function ForgotPassword(): JSX.Element {
   })
 
   function onSubmit(data: FormValues) {
-    axios.post("http://localhost:5000/api/auth/change", data).then((response: any) => {
+    axios.post(`${import.meta.env.VITE_BACKEND}/api/auth/change`, data).then((response: any) => {
       console.log(response.data)
     }).catch((errors: unknown) => console.log(errors))
   }

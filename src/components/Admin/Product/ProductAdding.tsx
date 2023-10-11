@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, useState } from 'react'
 import { useForm, useFieldArray } from 'react-hook-form'
 import { RxCross2 } from 'react-icons/rx'
-
+import.meta.env
 import ProductCarousel from '../../ProductView/ProductCarousel'
 import ProductDescription from '../../ProductView/ProductDescription'
 import ProductInfo from '../../ProductView/ProductInfo'
@@ -60,7 +60,7 @@ const ProductAdding: FC = (): JSX.Element => {
         } else
           formdata.append("photos", photo)
       }
-      await axios.post("http://localhost:5000/api/products", formdata, {
+      await axios.post(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
         headers: {
           "Authorization": `Bearer ${Cookies.get('token')}`
         }

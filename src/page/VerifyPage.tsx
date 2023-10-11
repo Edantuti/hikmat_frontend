@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { changeAuthentication, setUserData } from "../slice/AuthSlice";
 import { setProducts } from "../slice/CartSlice";
-
+import.meta.env
 export default function VerifyPage() {
   const [params] = useSearchParams();
   const [verified, setVerified] = useState<boolean>(false);
@@ -20,7 +20,7 @@ export default function VerifyPage() {
     if (!token) return;
     try {
       const { data: authData, status } = await axios.get(
-        "http://localhost:5000/api/auth/verify",
+        `${import.meta.env.VITE_BACKEND}/api/auth/verify`,
         {
           params: {
             token: params.get("token"),
@@ -34,7 +34,7 @@ export default function VerifyPage() {
       if (status == 200) {
         setVerified(true);
         dispatch(changeAuthentication(true));
-        const { data } = await axios.get("http://localhost:5000/api/cart/", {
+        const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/cart/`, {
           headers: {
             Authorization: `Bearer ${Cookies.get("token")}`,
           },

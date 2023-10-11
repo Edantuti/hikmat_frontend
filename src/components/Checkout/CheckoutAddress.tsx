@@ -8,7 +8,7 @@ import Cookies from 'js-cookie';
 import { setProducts } from '../../slice/CartSlice';
 import { MdPayments } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
-
+import.meta.env
 type FormValues = {
   address: string,
   city: string,
@@ -33,7 +33,7 @@ const CheckoutAddress: FC<{ data: any }> = (props: any): JSX.Element => {
         return total + curr.discount
       }, 0)
       console.log(dealsDiscount)
-      axios.post("http://localhost:5000/api/orders", {
+      axios.post(`${import.meta.env.VITE_BACKEND}/api/orders`, {
         productId: i.id,
         quantity: i.cart_quantity,
         amount: Math.floor(i.price - i.price * ((i.discount + dealsDiscount) / 100)),

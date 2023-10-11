@@ -28,6 +28,8 @@ interface IProductInfo {
   Deals: any,
 }
 
+
+import.meta.env
 const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
   const [quantity, setQuantity] = useState(1)
   const dispatch = useDispatch()
@@ -42,7 +44,7 @@ const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
   }, [props.id])
 
   function getCart() {
-    axios.get(`http://localhost:5000/api/cart`, {
+    axios.get(`${import.meta.env.VITE_BACKEND}/api/cart`, {
       headers: {
         "Authorization": `Bearer ${Cookies.get('token')}`
       }
@@ -61,7 +63,7 @@ const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
     })
   }
   const addCartToProduct = () => {
-    axios.post(`http://localhost:5000/api/cart/`,
+    axios.post(`${import.meta.env.VITE_BACKEND}/api/cart/`,
       {
         userId: userData.userid,
         productId: props.id,

@@ -50,7 +50,7 @@ const Register: FC = (): JSX.Element => {
     formdata.append("phone", data.phone);
     formdata.get("profile_url");
     axios
-      .post(`http://localhost:5000/api/auth/register`, formdata, {
+      .post(`${import.meta.env.VITE_BACKEND}/api/auth/register`, formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Access-Control-Allow-Origin": "*",
