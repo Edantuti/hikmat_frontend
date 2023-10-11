@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&family=Volkhov&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+.button{
+    @apply bg-slate-100 py-2 px-6 hover:text-white hover:bg-[#004449] transition-colors rounded shadow;
+}
+
+.inputField{
+    @apply p-1 rounded font-poppins border shadow-inner focus:outline-none focus:border-b focus:border-b-blue-400 transition-colors;
+}
+input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
+  appearance:none;
+}
+
+.smallcarousel .swiper-slide-thumb-active{
+    @apply border-blue-400 border p-2 rounded;
+}
+
+.slick-next {
+  @apply fill-black;
+}
