@@ -7,7 +7,6 @@ import { changeAuthentication, setUserData } from "../../slice/AuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PasswordInput from "./PasswordInput";
 import { setProducts } from "../../slice/CartSlice";
-import.meta.env
 export type FormValues = {
   email: string;
   password: string;

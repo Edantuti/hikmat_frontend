@@ -1,6 +1,5 @@
 import axios from "axios"
 import Cookies from "js-cookie"
-import.meta.env
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from "react-toastify"
 

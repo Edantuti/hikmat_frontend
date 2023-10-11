@@ -8,7 +8,6 @@ import Cookies from 'js-cookie';
 import { setProducts } from '../../slice/CartSlice';
 import { MdPayments } from 'react-icons/md';
 import { ToastContainer, toast } from 'react-toastify';
-import.meta.env
 type FormValues = {
   address: string,
   city: string,

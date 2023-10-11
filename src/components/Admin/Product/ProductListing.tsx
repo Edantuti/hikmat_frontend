@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux'
 import Cookies from "js-cookie"
 import { Link, useLoaderData } from 'react-router-dom'
 import { changeAuthentication } from '../../../slice/AuthSlice'
-import.meta.env
 const ProductListing: FC = () => {
   const data = useLoaderData() as any
   const [rows, setRows] = useState<any[]>(data.rows)

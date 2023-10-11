@@ -4,7 +4,6 @@ import Cookies from 'js-cookie'
 import { RxCross1 } from "react-icons/rx";
 import { changeAuthentication } from "../../../slice/AuthSlice";
 import { useDispatch } from "react-redux";
-import.meta.env
 //TODO:Add Toast
 export default function DealsListing() {
   const [data, setData] = useState<any[]>([]);

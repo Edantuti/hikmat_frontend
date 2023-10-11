@@ -12,7 +12,6 @@ type FormValues = {
   email: string;
   phone: string;
 };
-import.meta.env
 export default function ProfileUpdate() {
   const { register, setValue, handleSubmit } = useForm<FormValues>({
     defaultValues: {},

@@ -1,7 +1,6 @@
 import axios from "axios"
 import { FC, useEffect, useState } from "react"
 import ProductCard from "../ProductList/ProductCard"
-import.meta.env
 //TODO:Deal Section Product improvement
 const DealsSection: FC = (): JSX.Element => {
   const [deals, setDeals] = useState<any>([])

@@ -41,7 +41,6 @@ import ForgotPassword from "./components/Auth/ForgotPassword.tsx";
 import DealsListing from "./components/Admin/Deals/DealsListing.tsx";
 import DealsAdding from "./components/Admin/Deals/DealsAdding.tsx";
 import DealsManipulation from "./components/Admin/Deals/DealsManipulation.tsx";
-import.meta.env
 
 const router = createBrowserRouter(
   createRoutesFromElements(

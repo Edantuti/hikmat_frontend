@@ -1,6 +1,5 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import.meta.env
 import Cookies from "js-cookie"
 import { RxCross2 } from "react-icons/rx"
 

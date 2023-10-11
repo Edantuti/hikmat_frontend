@@ -4,7 +4,6 @@ import { useSelector } from "react-redux"
 import { useState } from "react"
 import { FaRegStar, FaStar } from "react-icons/fa"
 import Cookies from "js-cookie"
-import.meta.env
 
 export default function ProductReviewForm(props: { productid: string, data: { count: number, rows: any[] } }): JSX.Element {
   const userData = useSelector((state: any) => state.auth.userData)

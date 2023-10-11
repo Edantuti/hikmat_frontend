@@ -5,7 +5,6 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { changeAuthentication, setUserData } from "../slice/AuthSlice";
 import { setProducts } from "../slice/CartSlice";
-import.meta.env
 export default function VerifyPage() {
   const [params] = useSearchParams();
   const [verified, setVerified] = useState<boolean>(false);

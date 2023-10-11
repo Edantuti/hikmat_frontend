@@ -11,7 +11,6 @@ import { MdOutlineShoppingCartCheckout } from "react-icons/md"
 import PageRedirect from "../components/Auth/PageRedirect";
 import { changeAuthentication } from "../slice/AuthSlice";
 
-import.meta.env
 
 const CartPage: FC = (): JSX.Element => {
   const dispatch = useDispatch();

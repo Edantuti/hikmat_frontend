@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios"
 import Cookies from "js-cookie"
-import.meta.env
 export const getOrderData = async (): Promise<AxiosResponse<any, any>> => {
 
   return await axios.get(`${import.meta.env.VITE_BACKEND}/api/orders/all`, {

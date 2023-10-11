@@ -5,7 +5,6 @@ import { FaCheck, FaHourglass } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setProducts } from "../../slice/CartSlice";
 import { changeAuthentication, setUserData } from "../../slice/AuthSlice";
-import.meta.env
 const OrderDetails: FC = (): JSX.Element => {
   const user = useSelector((state: any) => state.auth.userData);
   const dispatch = useDispatch();

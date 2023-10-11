@@ -29,7 +29,6 @@ interface IProductInfo {
 }
 
 
-import.meta.env
 const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
   const [quantity, setQuantity] = useState(1)
   const dispatch = useDispatch()

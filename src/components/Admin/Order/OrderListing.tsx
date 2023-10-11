@@ -5,7 +5,6 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { changeAuthentication } from '../../../slice/AuthSlice'
-import.meta.env
 //TODO:Add Toast
 const OrderListing: FC = (): JSX.Element => {
   const data = useLoaderData() as any

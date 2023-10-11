@@ -1,9 +1,7 @@
 import { FC, useEffect, useState } from "react";
-import.meta.env
 import ProductCard from "../components/ProductList/ProductCard";
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import axios from "axios";
-import.meta.env
 const ProductListPage: FC = (): JSX.Element => {
   const products = useLoaderData() as any;
   const [nextPage, setNextPages] = useState<number[]>([]);
