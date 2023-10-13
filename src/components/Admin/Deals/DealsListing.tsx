@@ -22,6 +22,9 @@ export default function DealsListing() {
   }
   async function removeDeals(id: string) {
     try {
+      setData(data.map((obj: any) => {
+        if (obj.id !== id) return obj.id
+      }))
       await axios.delete(`${import.meta.env.VITE_BACKEND}/api/deals`, {
         headers: {
           'Authorization': `Bearer ${Cookies.get("token")}`
@@ -30,9 +33,6 @@ export default function DealsListing() {
           id: id
         }
       })
-      setData(data.map((obj: any) => {
-        if (obj.id !== id) return obj.id
-      }))
     } catch (error: any) {
       console.error(error)
       if (error.response.status === 401) {
@@ -62,8 +62,8 @@ export default function DealsListing() {
             </thead>
             <tbody>
               {data.length > 0 && data.map((obj: any) => (
-                <tr key={obj.id} className="border" >
-                  <td><img src={obj.image || ""} alt="Product Image" className="w-48 aspect-auto" /></td>
+                obj && <tr key={obj.id} className="border" >
+                  <td>{obj.image !== undefined && <img src={obj.image || ""} alt="Product Image" className="w-48 aspect-auto" />}</td>
                   <td><p>{obj.name}</p></td>
                   <td><p>{obj.Products[0].name} </p></td>
                   <td><p>{obj.Products[0].discount} </p></td>

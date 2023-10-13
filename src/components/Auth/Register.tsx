@@ -33,7 +33,8 @@ const Register: FC = (): JSX.Element => {
   const [show, changeShow] = useState<boolean>(false);
   const [confirmShow, changeConfirmShow] = useState<boolean>(false);
   const onSubmit = async (data: FormValues) => {
-    const formdata = new FormData();
+    console.log(data)
+    let formdata = new FormData();
     changeExists(false)
     changeError("")
     const png = avatarfile.png();
@@ -48,7 +49,6 @@ const Register: FC = (): JSX.Element => {
     formdata.append("email", data.email);
     formdata.append("password", data.password);
     formdata.append("phone", data.phone);
-    formdata.get("profile_url");
     axios
       .post(`${import.meta.env.VITE_BACKEND}/api/auth/register`, formdata, {
         headers: {
