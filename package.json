@@ -30,7 +30,8 @@
     "swiper": "^10.1.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.6",
-    "victory": "^36.6.11"
+    "victory": "^36.6.11",
+    "vite-plugin-compression2": "^0.10.5"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
