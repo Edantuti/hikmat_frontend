@@ -33,7 +33,6 @@ const Register: FC = (): JSX.Element => {
   const [show, changeShow] = useState<boolean>(false);
   const [confirmShow, changeConfirmShow] = useState<boolean>(false);
   const onSubmit = async (data: FormValues) => {
-    console.log(data)
     let formdata = new FormData();
     changeExists(false)
     changeError("")
@@ -56,12 +55,12 @@ const Register: FC = (): JSX.Element => {
           "Access-Control-Allow-Origin": "*",
         },
       })
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         changeExists(false);
         changeError("");
       })
       .catch((error) => {
+        console.log(error)
         if (error.code === "ERR_BAD_REQUEST") {
           changeExists(true);
           changeError("");

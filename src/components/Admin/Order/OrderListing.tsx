@@ -36,8 +36,7 @@ function OrderComponent(props: any) {
     })
     if (data.status === "SUCCESS")
       setDeliverStatus(!deliverStatus)
-    else
-      console.log(data.error)
+
   }
   function changeDTDC(e: any) {
     setDTDC(e.target.value)
@@ -50,8 +49,6 @@ function OrderComponent(props: any) {
       headers: {
         "Authorization": `Bearer ${Cookies.get("token")}`
       }
-    }).then((response) => {
-      console.log(response)
     }).catch((error) => {
       console.error(error)
       if (error.response.status === 401) {

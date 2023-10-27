@@ -44,7 +44,6 @@ const CartPage: FC = (): JSX.Element => {
       );
       setPrice(
         data.reduce((total: any, current: any): number => {
-          console.log(current.price * current.cart_quantity)
           return total + current.cart_quantity * current.price;
         }, 0),
       );

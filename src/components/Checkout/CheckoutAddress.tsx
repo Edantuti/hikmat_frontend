@@ -31,7 +31,6 @@ const CheckoutAddress: FC<{ data: any }> = (props: any): JSX.Element => {
       const dealsDiscount = i.Deals.reduce((total: number, curr: any) => {
         return total + curr.discount
       }, 0)
-      console.log(dealsDiscount)
       axios.post(`${import.meta.env.VITE_BACKEND}/api/orders`, {
         productId: i.id,
         quantity: i.cart_quantity,

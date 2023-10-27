@@ -35,6 +35,7 @@ const ProductListing: FC = () => {
       }
     }
   }
+  console.log(rows)
   return (
     <>
       <h1 className="font-poppins md:text-3xl sm:text-lg m-2">Products</h1>

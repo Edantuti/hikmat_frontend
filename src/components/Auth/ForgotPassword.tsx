@@ -10,9 +10,8 @@ export default function ForgotPassword(): JSX.Element {
   })
 
   function onSubmit(data: FormValues) {
-    axios.post(`${import.meta.env.VITE_BACKEND}/api/auth/change`, data).then((response: any) => {
-      console.log(response.data)
-    }).catch((errors: unknown) => console.log(errors))
+    axios.post(`${import.meta.env.VITE_BACKEND}/api/auth/change`, data).then(() => {
+    }).catch((errors: unknown) => console.error(errors))
   }
   return (
     <>

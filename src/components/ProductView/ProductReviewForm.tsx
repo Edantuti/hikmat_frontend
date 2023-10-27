@@ -4,6 +4,7 @@ import { useSelector } from "react-redux"
 import { useState } from "react"
 import { FaRegStar, FaStar } from "react-icons/fa"
 import Cookies from "js-cookie"
+import { toast } from "react-toastify"
 
 export default function ProductReviewForm(props: { productid: string, data: { count: number, rows: any[] } }): JSX.Element {
   const userData = useSelector((state: any) => state.auth.userData)
@@ -29,6 +30,7 @@ export default function ProductReviewForm(props: { productid: string, data: { co
           "Authorization": `Bearer ${Cookies.get('token')}`
         }
       })
+      toast.success("Your review has been submitted.")
     } catch (error) {
       console.error(error)
 

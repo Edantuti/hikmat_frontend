@@ -49,7 +49,7 @@ const Header: FC = (): JSX.Element => {
               <div
                 className={
                   visible
-                    ? "rounded shadow-lg absolute top-20 md:-left-56 -left-36 flex h-80 flex-col w-72 transition-all overflow-hidden bg-white z-10 border"
+                    ? "rounded shadow-lg absolute top-20 md:-left-56 -left-56 flex h-96 flex-col w-72 transition-all overflow-hidden bg-white z-10 border"
                     : "absolute hidden transition-all"
                 }
               >

@@ -45,7 +45,7 @@ export default function ProfileUpdate() {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
-      dispatch(setUserData({ ...userData, profile_url: data[0].profile_url }))
+      dispatch(setUserData({ ...userData, profile_url: data.profile_url }))
     } catch (error) {
       console.error(error);
     }
