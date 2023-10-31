@@ -58,6 +58,7 @@ const OrderDetails: FC = (): JSX.Element => {
 };
 
 function OrderItem(props: any) {
+  console.log(props)
   const [cancelled, setCancelled] = useState<boolean>(props.cancelled);
   async function cancelOrder(e: any) {
     e.currentTarget.checked = true;
@@ -91,6 +92,7 @@ function OrderItem(props: any) {
           <p>Product Name: {props.Products[0].name}</p>
           <p>Quantity:{props.quantity}</p>
           <p>Date: {new Date(props.createdAt).toDateString()}</p>
+          <p>Payment_id:{props.paymentId} </p>
           <p>DTDC: {props.dtdcid && !cancelled ? props.dtdcid : !cancelled ? "Yet to be set" : "Cancelled"} </p>
         </div>
         <h3 className="text-gray-700 text-sm">Address</h3>

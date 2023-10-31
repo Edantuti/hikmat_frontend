@@ -41,6 +41,7 @@ import ForgotPassword from "./components/Auth/ForgotPassword.tsx";
 import DealsListing from "./components/Admin/Deals/DealsListing.tsx";
 import DealsAdding from "./components/Admin/Deals/DealsAdding.tsx";
 import DealsManipulation from "./components/Admin/Deals/DealsManipulation.tsx";
+import SuccessPage from "./page/SuccessPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -103,6 +104,26 @@ const router = createBrowserRouter(
             }}
           element={<CheckoutPage />}
         />
+        <Route path="/checkout/success"
+          loader={
+            async () => {
+              try {
+                const { data } = await axios.get(
+                  `${import.meta.env.VITE_BACKEND}/api/cart/`,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${Cookies.get("token")}`,
+                    },
+                  },
+                );
+                return data;
+              } catch (error: any) {
+                if (error.reponse.status === 401) {
+                  return error
+                }
+              }
+            }}
+          element={<SuccessPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/users" element={<UserPage />}>
           <Route index element={<ProfileDetails />} />

@@ -83,6 +83,7 @@ function OrderComponent(props: any) {
       </div>
       <div className="">
         <h2>Status:</h2>
+        <div>Payment: {props.paymentId}</div>
         <div>Delivered: <input type="checkbox" checked={deliverStatus} disabled={props.cancelled} onChange={() => changeDeliveredStatus(props.id)} /></div>
         <div>Cancelled: <input type="checkbox" defaultChecked={props.cancelled} disabled /></div>
       </div>

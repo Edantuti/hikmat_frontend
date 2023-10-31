@@ -2,7 +2,7 @@ import axios from 'axios';
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { useSelector, useDispatch } from 'react-redux';
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import CheckoutInfo from './CheckoutInfo';
 import Cookies from 'js-cookie';
 import { setProducts } from '../../slice/CartSlice';
@@ -19,6 +19,7 @@ type FormValues = {
 const CheckoutAddress: FC<{ data: any }> = (props: any): JSX.Element => {
   const loader = useLoaderData() as any;
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userData = useSelector((state: any) => state.auth.userData)
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>(
     {
@@ -26,31 +27,75 @@ const CheckoutAddress: FC<{ data: any }> = (props: any): JSX.Element => {
       reValidateMode: "onBlur"
     }
   )
-  const onSubmit = (data: any) => {
-    for (let i of loader) {
-      const dealsDiscount = i.Deals.reduce((total: number, curr: any) => {
-        return total + curr.discount
-      }, 0)
-      axios.post(`${import.meta.env.VITE_BACKEND}/api/orders`, {
-        productId: i.id,
-        quantity: i.cart_quantity,
-        amount: Math.floor(i.price - i.price * ((i.discount + dealsDiscount) / 100)),
-        address: data.address,
-        city: data.city,
-        pincode: data.pincode,
-        state: data.state,
-        userId: userData.userid
+  const onSubmit = async (data: any) => {
+    try {
+      let amount = 0;
+      for (let i of loader) {
+        const dealsDiscount = i.Deals.reduce((total: number, curr: any) => {
+          return total + curr.discount
+        }, 0)
+        amount += i.cart_quantity * Math.floor(i.price - i.price * ((i.discount + dealsDiscount) / 100))
+      }
+      const { data: orders } = await axios.post(`${import.meta.env.VITE_BACKEND}/api/checkout`, {
+        "amount": (amount + Math.floor(amount * 0.02)) * 100,
+        "currency": "INR",
       }, {
         headers: {
-          "Authorization": `Bearer ${Cookies.get('token')}`
+          "Authorization": `Bearer ${Cookies.get("token")}`
         }
-      }).then(() => {
-        dispatch(setProducts([]))
-        toast.success("Successfully placed your order.")
-      }).catch((error) => {
-        console.error(error)
-        toast.error("Your cannot be placed.")
       })
+      const options = {
+        "key": import.meta.env.VITE_KEY,
+        "amount": orders.amount,
+        "currency": orders.currency,
+        "name": "Hikmat",
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": orders.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function(response: any) {
+
+          for (let i of loader) {
+            const dealsDiscount = i.Deals.reduce((total: number, curr: any) => {
+              return total + curr.discount
+            }, 0)
+            axios.post(`${import.meta.env.VITE_BACKEND}/api/orders`, {
+              productId: i.id,
+              quantity: i.cart_quantity,
+              amount: Math.floor(i.price - i.price * ((i.discount + dealsDiscount) / 100)),
+              address: data.address,
+              city: data.city,
+              pincode: data.pincode,
+              state: data.state,
+              payment_id: response.razorpay_payment_id,
+              userId: userData.userid
+            }, {
+              headers: {
+                "Authorization": `Bearer ${Cookies.get('token')}`
+              }
+            }).then(() => {
+              dispatch(setProducts([]))
+              toast.success("Successfully placed your order.")
+              axios.post(`${import.meta.env.VITE_BACKEND}/api/checkout/verify`, response).then(({ data }) => {
+                navigate(data.url)
+              });
+            }).catch((error) => {
+              console.error(error)
+              toast.error("Your cannot be placed.")
+            })
+
+          }
+        }
+      }
+      //@ts-ignore
+      const razorpay = new Razorpay(options)
+
+      razorpay.on('payment.failed', function(response: any) {
+        console.error(response.error)
+        toast.error("Something went wrong!")
+      });
+      razorpay.open();
+    } catch (error) {
+      console.error(error)
     }
 
   }
