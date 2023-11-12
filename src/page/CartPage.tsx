@@ -24,7 +24,7 @@ const CartPage: FC = (): JSX.Element => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [addressData, setAddressData] = useState<any>({})
+  const [addressData, setAddressData] = useState<any>(undefined)
   const auth = useSelector((state: any) => state.auth.authenticated.value);
   const user = useSelector((state: any) => state.auth.userData);
   const [isOutOfStock, setIsOutOfStock] = useState<boolean>(false)
@@ -35,7 +35,7 @@ const CartPage: FC = (): JSX.Element => {
   }, []);
   async function checkout() {
     if (cart.length == 0) return
-    if (addressData.equals({})) return
+    if (addressData === undefined) return
     try {
       let amount = 0;
       for (let i of cart) {
