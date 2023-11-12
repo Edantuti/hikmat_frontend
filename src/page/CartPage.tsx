@@ -85,15 +85,15 @@ const CartPage: FC = (): JSX.Element => {
               totalDiscount(cart)
               totalPrice(cart)
               toast.success("Successfully placed your order.")
-              axios.post(`${import.meta.env.VITE_BACKEND}/api/checkout/verify`, response).then(({ data }) => {
-                navigate(data.url)
-              });
             }).catch((error) => {
               console.error(error)
               toast.error("Your cannot be placed.")
             })
 
           }
+          axios.post(`${import.meta.env.VITE_BACKEND}/api/checkout/verify`, response).then(({ data }) => {
+            navigate(data.url)
+          });
         }
       }
       //@ts-ignore
