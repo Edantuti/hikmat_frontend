@@ -13,7 +13,6 @@ type FormValues = {
   city: string,
   pincode: number,
   state: string,
-  country: string,
 }
 
 const CheckoutAddress: FC<{ data: any }> = (props: any): JSX.Element => {

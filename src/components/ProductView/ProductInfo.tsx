@@ -26,6 +26,7 @@ interface IProductInfo {
   size: string,
   similar: any,
   Deals: any,
+  quantity?: number
 }
 
 
@@ -140,13 +141,15 @@ const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
               <div className="flex text-lg items-center">
                 <button className="py-1 px-4 border rounded-l-full font-bold text-md" onClick={() => setQuantity(quantity + 1)}>+</button>
                 <p className="p-1 px-4 border-t border-b">{quantity}</p>
-                <button className="py-1 px-4 border rounded-r-full font-bold text-md" onClick={() => setQuantity(quantity - 1 > 1 ? quantity - 1 : 1)}>-</button>
+                <button className="py-1 px-4 border rounded-r-full font-bold text-md" onClick={() => setQuantity(quantity - 1 > 1 ? props.quantity ? Math.min(quantity - 1, props.quantity) : quantity - 1 : 1)}>-</button>
               </div>
-
             </div>
-            <button className="py-1 px-4 text-sm font-bold font-poppins hover:bg-[#004449] hover:text-white bg-[#FAFAFA] shadow transition-colors rounded-full"
+            <div>
+              {props.quantity === 0 && <p className="font-poppins text-lg">Out of Stock!</p>}
+            </div>
+            <button className="py-1 px-4 text-sm font-bold font-poppins hover:bg-[#004449] hover:text-white bg-[#FAFAFA] shadow transition-colors rounded-full disabled:bg-slate-300"
               onClick={() => addCartToProduct()}
-            >Add to Cart</button>
+              disabled={props.quantity === 0}>Add to Cart</button>
           </div>
           <div className="m-2">
             <div className="m-2">

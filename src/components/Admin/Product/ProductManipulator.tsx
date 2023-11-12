@@ -30,6 +30,7 @@ const ProductManipulator: FC = (): JSX.Element => {
   const [similarProductSize, setSimilarProductSize] = useState<any[]>([]);
   const [product, setProduct] = useState<any>(null);
   const [photos, setPhotos] = useState<Array<File>>([]);
+  const [similar, setSimilar] = useState<boolean>(false);
   const { control, watch, register, setValue, handleSubmit } =
     useForm<FormValues>({
       defaultValues: {},
@@ -38,6 +39,7 @@ const ProductManipulator: FC = (): JSX.Element => {
   useEffect(() => {
     getProduct(productid).then((response) => {
       setProduct(response);
+      setSimilar(response.ChildProduct.length !== 0)
       setValue("name", response.name);
       setValue("category", response.category);
       setValue("benefits", response.benefits);
@@ -105,7 +107,8 @@ const ProductManipulator: FC = (): JSX.Element => {
       formdata.append("size", data.size);
       formdata.append("category", data.category);
       formdata.append("brand", data.brand);
-      formdata.append("similarProduct", data.similarProduct);
+      if (similar)
+        formdata.append("similarProduct", data.similarProduct);
       formdata.append("discount", data.discount);
       for (const photo of photos) {
         if (photo instanceof File) {
@@ -212,21 +215,26 @@ const ProductManipulator: FC = (): JSX.Element => {
                 required: true,
               })}
             />
-            <p>Similar Products Linking:</p>
-            <select
-              className="inputField bg-white"
-              {...register("similarProduct")}
-            >
-              {productList.map(
-                (product: any) =>
-                  product.id !== productid && (
-                    <option key={product.id} value={product.id}>
-                      {product.name}
-                    </option>
-                  ),
-              )}
-              )
-            </select>
+            <div className="flex gap-2">
+              <input type="checkbox" onChange={() => setSimilar(!similar)} defaultChecked={similar} />
+              <p>Products Similar to this?</p>
+            </div>
+            {similar &&
+              <><p>Similar Products Linking:</p>
+                <select
+                  className="inputField bg-white"
+                  {...register("similarProduct")}
+                >
+                  {productList.map(
+                    (product: any) =>
+                      product.id !== productid && (
+                        <option key={product.id} value={product.id}>
+                          {product.name}
+                        </option>
+                      ),
+                  )}
+                  )
+                </select></>}
             <p>Product Photos:</p>
             <div className="rounded border relative h-32 flex items-center justify-center">
               <input
@@ -287,7 +295,7 @@ const ProductManipulator: FC = (): JSX.Element => {
                 <div key={field.id} className="flex gap-5">
                   <input
                     placeholder="Benefits"
-                    className="inputField sm:w-auto w-56"
+                    className="inputField sm:w-auto w-[80%]"
                     {...register(`benefits.${id}`)}
                   />
                   <button onClick={() => removeBenefit(id)} className="button">
@@ -311,7 +319,7 @@ const ProductManipulator: FC = (): JSX.Element => {
                 <div key={field.id} className="flex gap-5">
                   <input
                     placeholder="Benefits"
-                    className="inputField sm:w-auto w-56"
+                    className="inputField sm:w-auto w-[80%]"
                     {...register(`details.${id}`)}
                   />
                   <button onClick={() => removeDetail(id)} className="button">

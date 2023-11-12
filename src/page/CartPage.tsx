@@ -23,7 +23,7 @@ const CartPage: FC = (): JSX.Element => {
   const [price, setPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
   const auth = useSelector((state: any) => state.auth.authenticated.value);
-
+  const [isOutOfStock, setIsOutOfStock] = useState<boolean>(false)
   const cartRetrieve = async () => {
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/cart/`, {
@@ -31,6 +31,12 @@ const CartPage: FC = (): JSX.Element => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
+      for (let i of data) {
+        if (i.quantity === 0) {
+          setIsOutOfStock(true)
+          break;
+        }
+      }
       setDiscount(
         data.reduce((total: number, current: any) => {
           const discount = current.Deals.reduce((sum: number, curr: any) => {
@@ -88,6 +94,13 @@ const CartPage: FC = (): JSX.Element => {
       }, 0),
     );
     dispatch(setProducts(cartData));
+    let counter = cart.length()
+    for (let i of cart) {
+      if (i.quantity != 0) {
+        counter--;
+      }
+    }
+    setIsOutOfStock(counter !== 0)
   };
   return (
     <>
@@ -122,14 +135,17 @@ const CartPage: FC = (): JSX.Element => {
               <b>Grand total:</b>
               {price - Math.floor(discount)}
             </p>
-            <Link
-              to="/checkout"
-              className="text-2xl absolute bottom-0 h-20 items-center flex w-full bg-slate-100 py-2 px-6 hover:text-white hover:bg-[#004449] transition-colors rounded-bl shadow font-poppins"
-            >
-              <MdOutlineShoppingCartCheckout />
-              Checkout
-              <FaArrowRight />
-            </Link>
+            {isOutOfStock ? <div className="text-lg absolute bottom-0 h-20 items-center flex w-full bg-slate-100 py-2 px-6">Remove Out of Stock item(s)</div> :
+              <Link
+                to={cart.length > 0 ? "/checkout" : "/cart"}
+                className="text-2xl absolute bottom-0 h-20 items-center flex w-full bg-slate-100 py-2 px-6 hover:text-white hover:bg-[#004449] transition-colors rounded-bl shadow font-poppins"
+
+              >
+
+                <MdOutlineShoppingCartCheckout />
+                Checkout
+                <FaArrowRight />
+              </Link>}
           </section>
         </div>
       ) : (

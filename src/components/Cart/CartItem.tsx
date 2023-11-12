@@ -5,7 +5,7 @@ import { RiDeleteBin4Line } from "react-icons/ri"
 interface ICartItem {
   item: any,
   index: number,
-  length: number
+  length: number,
   removeFromCart: (id: string) => Promise<void>
 }
 
@@ -27,6 +27,7 @@ const CartItem: FC<ICartItem> = (props): JSX.Element => {
           <p className="text-sm"><b>Price:</b> {price}</p>
           <p className="text-sm"><b>Quantity:</b> {props.item.cart_quantity}</p>
           <p className="text-sm"><b>Total Price:</b>{price * props.item.cart_quantity}</p>
+          {props.item.quantity === 0 && <p className="font-poppins text-lg">Out of Stock!</p>}
         </div>
         <button type="button" className="flex items-center bg-slate-100 py-2 px-6 hover:text-white hover:bg-[#990808] transition-colors rounded shadow h-10  ml-auto mr-4" onClick={() => props.removeFromCart(props.item.cartid)}><RiDeleteBin4Line /> </button>
       </div>

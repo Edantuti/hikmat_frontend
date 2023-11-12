@@ -12,7 +12,7 @@ const ProductDescription: FC<IProductDescription> = (props): JSX.Element => {
       <section className="border rounded p-10 m-2">
         <div className="">
           <h2 className="my-2 xl:text-2xl md:text-xl text-lg font-bold font-poppins underline">Product Description</h2>
-          <p className="text-md whitespace-pre p-2 rounded">{props.description}</p>
+          <p className="text-md break-all whitespace-pre p-2 rounded">{props.description}</p>
         </div>
         <div className="my-10">
           <h2 className="xl:text-2xl md:text-xl text-lg font-bold font-poppins underline">Benefits</h2>

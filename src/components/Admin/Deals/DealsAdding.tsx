@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Cookies from 'js-cookie'
 import { useForm } from "react-hook-form"
 import { ToastContainer, toast } from "react-toastify";
-//TODO:Add Toast
+
 type FormValues = {
   name: string,
   discount: number,

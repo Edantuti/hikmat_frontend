@@ -32,7 +32,7 @@ export default function BrandListing() {
     <>
 
       <section className="m-2">
-        <h2 className="text-2xl">Categories</h2>
+        <h2 className="text-2xl">Brand</h2>
         {data.length > 0 ? data.map((obj: any) => {
 
           return (

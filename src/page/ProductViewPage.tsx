@@ -8,7 +8,6 @@ import { useLoaderData } from "react-router-dom";
 import ProductReview from "../components/ProductView/ProductReview";
 const ProductViewPage: FC = (): JSX.Element => {
   const productData = useLoaderData() as ProductType;
-
   return (
     <>
       <section className="md:flex">
@@ -24,6 +23,7 @@ const ProductViewPage: FC = (): JSX.Element => {
           size={productData.size}
           similar={productData.ChildProduct}
           Deals={productData.Deals}
+          quantity={productData.quantity}
         />
       </section>
       <ProductDescription

@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setUserData } from "../../slice/AuthSlice";
+import AddressUpdateForm from "./AddressUpdateForm";
+import { ToastContainer, toast } from "react-toastify";
 
 type FormValues = {
   first: string;
@@ -33,8 +35,8 @@ export default function ProfileUpdate() {
   async function onSubmit(profileData: any) {
     try {
       const formdata = new FormData();
-      if (!file) return console.error("Error: File not submitted")
-      formdata.set("profile_url", new Blob([await file.arrayBuffer()], { type: file.type }))
+      if (file)
+        formdata.set("profile_url", new Blob([await file.arrayBuffer()], { type: file.type }))
       formdata.set("userid", userData.userid);
       formdata.set("last", profileData.last);
       formdata.set("first", profileData.first);
@@ -46,6 +48,7 @@ export default function ProfileUpdate() {
         },
       });
       dispatch(setUserData({ ...userData, profile_url: data.profile_url }))
+      toast.success("Your Profile is updated!")
     } catch (error) {
       console.error(error);
     }
@@ -57,7 +60,7 @@ export default function ProfileUpdate() {
   };
   return (
     <>
-      <section>
+      <section className="md:flex gap-2">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-2"
@@ -65,7 +68,7 @@ export default function ProfileUpdate() {
           <div className="relative">
             <input
               type="file"
-              className="opacity-0 absolute z-10  w-36 h-36 md:left-40 left-44 right-[50%]"
+              className="opacity-0 absolute z-10  w-36 h-36 md:left-24 left-44 right-[50%]"
               onChange={(e) => fileChanger(e)}
             />
             <img
@@ -109,6 +112,8 @@ export default function ProfileUpdate() {
             Submit
           </button>
         </form>
+        <AddressUpdateForm />
+        <ToastContainer theme="colored" />
       </section>
     </>
   );

@@ -41,6 +41,7 @@ const ProductListPage: FC = (): JSX.Element => {
   async function retrieveCategory() {
     return axios.get(`${import.meta.env.VITE_BACKEND}/api/categories`)
   }
+
   return (
     <>
       <section className="py-5">
