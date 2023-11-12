@@ -138,11 +138,11 @@ const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
               <span className="w-fit bg-green-300 px-2 rounded-full text-sm text-neutral-700">{props.rating} &#9733;</span>
             </div>
             <div className="flex my-5">
-              <div className="flex text-lg items-center">
+              {props.quantity != 0 && props.quantity != undefined && <div className="flex text-lg items-center">
                 <button className="py-1 px-4 border rounded-l-full font-bold text-md" onClick={() => setQuantity(props.quantity ? Math.min(quantity + 1, props.quantity) : quantity + 1)}>+</button>
-                {props.quantity && <p className="p-1 px-4 border-t border-b">{Math.min(quantity, props.quantity)}</p>}
+                <p className="p-1 px-4 border-t border-b">{Math.min(quantity, props.quantity)}</p>
                 <button className="py-1 px-4 border rounded-r-full font-bold text-md" onClick={() => setQuantity(quantity - 1 > 1 ? props.quantity ? Math.min(quantity - 1, props.quantity) : quantity - 1 : 1)}>-</button>
-              </div>
+              </div>}
             </div>
             <div>
               {props.quantity === 0 && <p className="font-poppins text-lg">Out of Stock!</p>}

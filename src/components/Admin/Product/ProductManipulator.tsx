@@ -216,7 +216,7 @@ const ProductManipulator: FC = (): JSX.Element => {
               })}
             />
             <div className="flex gap-2">
-              <input type="checkbox" onChange={() => setSimilar(!similar)} defaultChecked={similar} />
+              <input type="checkbox" onChange={() => setSimilar(!similar)} checked={similar} />
               <p>Products Similar to this?</p>
             </div>
             {similar &&
