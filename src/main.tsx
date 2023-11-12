@@ -19,7 +19,6 @@ import HomePage from "./page/HomePage.tsx";
 import ProductListPage from "./page/ProductListPage.tsx";
 import ProductViewPage from "./page/ProductViewPage.tsx";
 import AuthPage from "./page/AuthPage.tsx";
-import CheckoutPage from "./page/CheckoutPage.tsx";
 import CartPage from "./page/CartPage.tsx";
 import store from "./store.ts";
 import AdminPage from "./page/AdminPage.tsx";
@@ -82,29 +81,7 @@ const router = createBrowserRouter(
           path="/auth/generatepassword"
           element={<AuthPage type="forgot" />}
         />
-        <Route
-          path="/checkout"
-          loader={
-            async () => {
-              try {
-                const { data } = await axios.get(
-                  `${import.meta.env.VITE_BACKEND}/api/cart/`,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${Cookies.get("token")}`,
-                    },
-                  },
-                );
-                return data;
-              } catch (error: any) {
-                if (error.reponse.status === 401) {
-                  return error
-                }
-              }
-            }}
-          element={<CheckoutPage />}
-        />
-        <Route path="/checkout/success"
+        <Route path="/cart/success"
           loader={
             async () => {
               try {

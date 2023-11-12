@@ -139,8 +139,8 @@ const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
             </div>
             <div className="flex my-5">
               <div className="flex text-lg items-center">
-                <button className="py-1 px-4 border rounded-l-full font-bold text-md" onClick={() => setQuantity(quantity + 1)}>+</button>
-                <p className="p-1 px-4 border-t border-b">{quantity}</p>
+                <button className="py-1 px-4 border rounded-l-full font-bold text-md" onClick={() => setQuantity(props.quantity ? Math.min(quantity + 1, props.quantity) : quantity + 1)}>+</button>
+                {props.quantity && <p className="p-1 px-4 border-t border-b">{Math.min(quantity, props.quantity)}</p>}
                 <button className="py-1 px-4 border rounded-r-full font-bold text-md" onClick={() => setQuantity(quantity - 1 > 1 ? props.quantity ? Math.min(quantity - 1, props.quantity) : quantity - 1 : 1)}>-</button>
               </div>
             </div>
