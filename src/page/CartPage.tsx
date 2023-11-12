@@ -35,6 +35,7 @@ const CartPage: FC = (): JSX.Element => {
   }, []);
   async function checkout() {
     if (cart.length == 0) return
+    if (addressData.equals({})) return
     try {
       let amount = 0;
       for (let i of cart) {
