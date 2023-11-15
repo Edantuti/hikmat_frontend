@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BsCart3 } from "react-icons/bs";
-import { changeAuthentication } from "../slice/AuthSlice";
+import { changeAuthentication, setUserData } from "../slice/AuthSlice";
 import { useSelector, useDispatch } from "react-redux";
 // import { useCookies } from "react-cookie"
 import Cookies from "js-cookie";
@@ -14,6 +14,7 @@ const Header: FC = (): JSX.Element => {
   const dispatch = useDispatch();
   const logOut = () => {
     Cookies.remove("token");
+    dispatch(setUserData({}));
     dispatch(changeAuthentication(false));
   };
 
