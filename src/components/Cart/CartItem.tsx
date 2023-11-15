@@ -20,7 +20,7 @@ const CartItem: FC<ICartItem> = (props): JSX.Element => {
 
       <div className={`border flex h-60 w-full ${((props.length - 1) !== props.index ? 'mb-2' : "mb-0")} rounded items-center`}>
         <div className="h-48 w-72 aspect-square rounded-t p-1 flex justify-center">
-          <img src={props.item.photos[0]} alt={props.item.name} className="rounded-t aspect-square overflow-hidden h-auto" />
+          <img loading="lazy" src={props.item.photos[0]} alt={props.item.name} className="rounded-t aspect-square overflow-hidden h-auto" />
         </div>
         <div className="text-lg p-4 my-10 w-96 flex-2">
           <p className="lg:text-3xl md:text-2xl text-xl">{props.item.name}</p>

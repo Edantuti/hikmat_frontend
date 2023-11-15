@@ -18,11 +18,11 @@ const ArrivalsSection = (): JSX.Element => {
         <p className="w-[70%] mx-auto text-center py-5">These are some of the categories we have for the Products</p>
         <div className="mx-auto">
           <Swiper className="md:w-[70vw] w-[80vw]" spaceBetween={20} slidesPerView={isMobile ? 1 : 2} navigation={true} modules={[Navigation, FreeMode]}>
-            <SwiperSlide><img src={cosmetics} width="1280px" height="720px" /></SwiperSlide>
-            <SwiperSlide><img src={harioil} width="1280px" height="720px" /></SwiperSlide>
-            <SwiperSlide><img src={marrham} width="1280px" height="720px" /></SwiperSlide>
-            <SwiperSlide><img src={sharbat} width="1280px" height="720px" /></SwiperSlide>
-            <SwiperSlide><img src={syrups} width="1280px" height="720px" /></SwiperSlide>
+            <SwiperSlide><img loading="lazy" src={cosmetics} width="1280px" height="720px" /></SwiperSlide>
+            <SwiperSlide><img loading="lazy" src={harioil} width="1280px" height="720px" /></SwiperSlide>
+            <SwiperSlide><img loading="lazy" src={marrham} width="1280px" height="720px" /></SwiperSlide>
+            <SwiperSlide><img loading="lazy" src={sharbat} width="1280px" height="720px" /></SwiperSlide>
+            <SwiperSlide><img loading="lazy" src={syrups} width="1280px" height="720px" /></SwiperSlide>
           </Swiper>
         </div>
       </section>

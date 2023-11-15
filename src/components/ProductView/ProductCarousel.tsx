@@ -26,7 +26,7 @@ const ProductCarousel: FC<IProductCarousel> = (props): JSX.Element => {
         >
           {props.image_urls.map((obj, key) => (
             <SwiperSlide key={key} className="bg-cover bg-center rounded">
-              <img src={`${obj}`} className="mx-auto rounded object-cover" alt="Product Photo" />
+              <img loading="lazy" src={`${obj}`} className="mx-auto rounded object-cover" alt="Product Photo" />
             </SwiperSlide>
           ))}
         </Swiper>
@@ -43,7 +43,7 @@ const ProductCarousel: FC<IProductCarousel> = (props): JSX.Element => {
 
           {props.image_urls.map((obj, key) => (
             <SwiperSlide key={key} className="p-2" >
-              <img src={obj} className="w-20 rounded" alt="" />
+              <img loading="lazy" src={obj} className="w-20 rounded" alt="" />
             </SwiperSlide>
           ))}
         </Swiper>

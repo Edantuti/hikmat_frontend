@@ -95,7 +95,7 @@ const Register: FC = (): JSX.Element => {
             className="opacity-0 absolute z-10  w-36 h-36 md:left-40 left-44 right-[50%]"
             onChange={(e) => fileChanger(e)}
           />
-          <img
+          <img loading="lazy"
             src={fileUrl}
             alt="profile"
             className="rounded-full  w-36 h-36 mx-auto p-2"
