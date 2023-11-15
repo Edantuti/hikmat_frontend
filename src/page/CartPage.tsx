@@ -224,6 +224,7 @@ const CartPage: FC = (): JSX.Element => {
           <div className="flex gap-1 ml-10 mt-16">
             <input type="checkbox" onChange={() => { setModalOpen(!modalOpen) }} checked={changeAddress} />
             <p onClick={() => { setModalOpen(!modalOpen) }}>Ship to a different address?</p>
+            <p>You can change your default address from the profile.</p>
           </div>
           <p className="w-fit ml-10 text-lg lg:mt-auto">
             <b>Subtotal:</b>
