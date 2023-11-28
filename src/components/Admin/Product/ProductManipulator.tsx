@@ -96,6 +96,7 @@ const ProductManipulator: FC = (): JSX.Element => {
     ).data.result.rows;
   }
   const onSubmit = async (data: any) => {
+    const id = toast.loading("Updating")
     try {
       const formdata = new FormData();
       formdata.append("name", data.name);
@@ -126,11 +127,14 @@ const ProductManipulator: FC = (): JSX.Element => {
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
-      });
-      return toast.success("Changes has been made successfully.");
+      }).then(() => toast.update(id, { render: "Changes has been made successfully.", type: "success", isLoading: false }))
+        .catch((error) => {
+          console.error(error);
+          return toast.update(id, { render: "There is some error", type: "error", isLoading: false });
+        })
     } catch (error) {
       console.error(error);
-      return toast.error("There is some error");
+      return toast.update(id, { render: "There is some error", type: "error", isLoading: false });
     }
   };
 

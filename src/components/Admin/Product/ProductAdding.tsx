@@ -41,6 +41,7 @@ const ProductAdding: FC = (): JSX.Element => {
   })
 
   const onSubmit = async (data: any) => {
+    const id = toast.loading("Adding...")
     try {
       const formdata = new FormData()
       formdata.append("name", data.name)
@@ -59,16 +60,21 @@ const ProductAdding: FC = (): JSX.Element => {
         } else
           formdata.append("photos", photo)
       }
-      await axios.post(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
+      axios.post(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
         headers: {
           "Authorization": `Bearer ${Cookies.get('token')}`
         }
+      }).then(() => {
+        return toast.update(id, { render: "Changes has been made successfully.", type: "success", isLoading: false })
       })
-      return toast.success("Changes has been made successfully.")
+        .catch((error) => {
+          console.error(error)
+          return toast.update(id, { render: "There is some error", type: "error", isLoading: false })
+        })
 
     } catch (error) {
       console.error(error)
-      return toast.error("There is some error")
+      return toast.update(id, { render: "There is some error", type: "error", isLoading: false })
     }
   }
 
