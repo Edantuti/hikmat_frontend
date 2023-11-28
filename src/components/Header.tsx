@@ -43,7 +43,7 @@ const Header: FC = (): JSX.Element => {
           {auth && (
             <div className="relative" onClick={() => changeVisible(!visible)}>
               <img loading="lazy"
-                src={userData.profile_url}
+                src={userData.profile_url + "?type=low"}
                 alt="profile"
                 className="w-16 h-16 bg-white rounded-full border"
               />
@@ -56,7 +56,7 @@ const Header: FC = (): JSX.Element => {
               >
                 <div className="md:flex py-4 px-4 bg-[#004444] gap-2 border-b-2 border-[#105050] shadow">
                   <img loading="lazy"
-                    src={userData.profile_url}
+                    src={userData.profile_url + "?type=low"}
                     alt="profile"
                     className="mx-auto md:mx-0 w-20 h-20 border bg-white rounded-full"
                   />

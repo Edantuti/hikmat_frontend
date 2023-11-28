@@ -119,7 +119,7 @@ const ProductManipulator: FC = (): JSX.Element => {
           );
         } else formdata.append("photos", photo);
       }
-      await axios.patch(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
+      axios.patch(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
         params: {
           id: productid,
         },
