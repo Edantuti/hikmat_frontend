@@ -82,24 +82,6 @@ const router = createBrowserRouter(
           element={<AuthPage type="forgot" />}
         />
         <Route path="/cart/success"
-          loader={
-            async () => {
-              try {
-                const { data } = await axios.get(
-                  `${import.meta.env.VITE_BACKEND}/api/cart/`,
-                  {
-                    headers: {
-                      Authorization: `Bearer ${Cookies.get("token")}`,
-                    },
-                  },
-                );
-                return data;
-              } catch (error: any) {
-                if (error.reponse.status === 401) {
-                  return error
-                }
-              }
-            }}
           element={<SuccessPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/users" element={<UserPage />}>
@@ -146,6 +128,8 @@ const router = createBrowserRouter(
                 await axios.get(`${import.meta.env.VITE_BACKEND}/api/orders/all`, {
                   headers: {
                     Authorization: `Bearer ${Cookies.get("token")}`,
+
+                    "Access-Control-Allow-Origin": "*",
                   },
                 })
               ).data.result;

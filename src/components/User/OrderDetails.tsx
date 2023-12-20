@@ -20,7 +20,7 @@ const OrderDetails: FC = (): JSX.Element => {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
         params: {
-          userId: user.userid,
+          userid: user.userid,
         },
       })
       .then((response) => {
