@@ -8,8 +8,6 @@ import {
   createRoutesFromElements,
   RouterProvider,
 } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import { persistStore } from "redux-persist";
@@ -39,7 +37,6 @@ import VerifyPage from "./page/VerifyPage.tsx";
 import ForgotPassword from "./components/Auth/ForgotPassword.tsx";
 import DealsListing from "./components/Admin/Deals/DealsListing.tsx";
 import DealsAdding from "./components/Admin/Deals/DealsAdding.tsx";
-import DealsManipulation from "./components/Admin/Deals/DealsManipulation.tsx";
 import SuccessPage from "./page/SuccessPage.tsx";
 
 const router = createBrowserRouter(
@@ -49,28 +46,20 @@ const router = createBrowserRouter(
         <Route index element={<HomePage />} />
         <Route
           path="/product/"
-          loader={async ({ request }) => {
-            const url = new URL(request.url);
-            return (
-              await axios.get(`${import.meta.env.VITE_BACKEND}/api/products`, {
-                params: {
-                  category: url.searchParams.get("category"),
-                  brand: url.searchParams.get("brand"),
-                  offset: url.searchParams.get("offset"),
-                },
-              })
-            ).data.result;
-          }}
+          loader={
+            ({ request }) => {
+              const url = new URLSearchParams(request.url)
+              return {
+                category: url.get("category"),
+                brand: url.get("brand"),
+                offset: url.get("offset")
+              }
+            }
+          }
           element={<ProductListPage />}
         />
         <Route
           path="/product/:productId"
-          loader={async ({ params }) => {
-            const data = await axios.get(
-              `${import.meta.env.VITE_BACKEND}/api/products/?id=${params.productId}`,
-            );
-            return data.data.result.rows[0];
-          }}
           element={<ProductViewPage />}
         />
         <Route path="/auth/login" element={<AuthPage type="login" />} />
@@ -94,67 +83,15 @@ const router = createBrowserRouter(
         <Route index element={<AdminDashboard />} />
         <Route path="/admin/deals" element={<DealsListing />} />
         <Route
-          path={`/admin/deals/edit/:dealid`}
-          loader={({ params }) => {
-            if (params.productid) return params.productid;
-            return "";
-          }}
-          element={<DealsManipulation />}
-        />
-        <Route
           path="/admin/product"
-          loader={async () => {
-            const data = (await axios.get(`${import.meta.env.VITE_BACKEND}/api/products`, {
-              params: { limit: 100000 }
-            }))
-              .data.result;
-            data.rows.sort((a: any, b: any) => {
-              if (
-                new Date(a.updatedAt).getTime() <
-                new Date(b.updatedAt).getTime()
-              )
-                return 1;
-              else return -1;
-            });
-            return data;
-          }}
           element={<ProductListing />}
         />
         <Route
           path="/admin/orders"
-          loader={async () => {
-            try {
-              const data = (
-                await axios.get(`${import.meta.env.VITE_BACKEND}/api/orders/all`, {
-                  headers: {
-                    Authorization: `Bearer ${Cookies.get("token")}`,
-
-                    "Access-Control-Allow-Origin": "*",
-                  },
-                })
-              ).data.result;
-              data.sort((a: any, b: any) => {
-                if (
-                  new Date(a.createdAt).getTime() <
-                  new Date(b.createdAt).getTime()
-                )
-                  return 1;
-                else return -1;
-              });
-
-              return data;
-            } catch (error: any) {
-              return error
-            }
-          }}
           element={<OrderListing />}
         />
         <Route
           path={`/admin/product/edit/:productid`}
-          loader={({ params }) => {
-            if (params.productid) return params.productid;
-            return "";
-          }}
           element={<ProductManipulator />}
         />
         <Route path={`/admin/deals/create`} element={<DealsAdding />} />

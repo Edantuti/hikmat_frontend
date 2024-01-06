@@ -4,6 +4,7 @@ import PageRedirect from "../components/Auth/PageRedirect";
 import UserNavigation from "../components/User/UserNavigation";
 import { Outlet } from "react-router-dom";
 
+//TODO: REMOVE FC
 const UserPage: FC = (): JSX.Element => {
   const auth = useSelector((state: any) => state.auth.authenticated.value);
   //TODO:Create a navigation route for Orders

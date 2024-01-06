@@ -26,14 +26,11 @@ const Login: FC = (): JSX.Element => {
   } = useForm<FormValues>({
     reValidateMode: "onBlur",
   });
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: FormValues) => {
     try {
       const post = await axios.post(
         `${import.meta.env.VITE_BACKEND}/api/auth/login`,
-        {
-          email: data.email,
-          password: data.password,
-        },
+        data,
         {
           headers: {
             "Content-Type": "application/json",
@@ -46,17 +43,15 @@ const Login: FC = (): JSX.Element => {
         path: "/",
         expires: 3,
       });
-      if (post.status == 200) {
-        dispatch(changeAuthentication(true));
-        const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/cart`, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("token")}`,
-          },
-        });
-        dispatch(setProducts(data));
-        dispatch(setUserData(post.data.userData));
-        navigate("/");
-      }
+      dispatch(changeAuthentication(true));
+      const { data: CartData } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/cart`, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("token")}`,
+        },
+      });
+      dispatch(setProducts(CartData));
+      dispatch(setUserData(post.data.userData));
+      navigate("/");
     } catch (errors) {
       console.error(errors);
       const AXIOS_ERROR = errors as any;

@@ -6,9 +6,10 @@ import ProductDescription from "../../ProductView/ProductDescription";
 import ProductInfo from "../../ProductView/ProductInfo";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { FaFile } from "react-icons/fa";
+import { useFetchProductByID, useFetchProducts } from "../../../hooks/products";
 
 type FormValues = {
   name: string;
@@ -25,11 +26,12 @@ type FormValues = {
 };
 
 const ProductManipulator: FC = (): JSX.Element => {
-  const productid = useLoaderData() as any;
-  const [productList, setProductList] = useState<any[]>([]);
+  const { productid } = useParams();
+  const { products: productList } = useFetchProducts({ limit: 0 })
   const [similarProductSize, setSimilarProductSize] = useState<any[]>([]);
-  const [product, setProduct] = useState<any>(null);
-  const [photos, setPhotos] = useState<Array<File>>([]);
+  const { product } = useFetchProductByID(productid as string)
+  const [photos, setPhotos] = useState<(File | string)[]>([]);
+
   const [similar, setSimilar] = useState<boolean>(false);
   const { control, watch, register, setValue, handleSubmit } =
     useForm<FormValues>({
@@ -37,26 +39,24 @@ const ProductManipulator: FC = (): JSX.Element => {
       reValidateMode: "onBlur",
     });
   useEffect(() => {
-    getProduct(productid).then((response) => {
-      setProduct(response);
-      setSimilar(response.ChildProduct.length !== 0)
-      setValue("name", response.name);
-      setValue("category", response.category);
-      setValue("benefits", response.benefits);
-      setValue("description", response.description);
-      setValue("brand", response.brand);
-      setValue("details", response.details);
-      setValue("price", response.price);
-      setValue("size", response.size);
-      setValue("quantity", response.quantity);
-      setValue("discount", response.discount);
-      setPhotos(response.photos);
-      setSimilarProductSize(response.ChildProduct);
-    });
-    getProductList().then((response) => {
-      setProductList(response);
-    });
-  }, []);
+    if (product) {
+      setSimilar(product.ChildProduct.length !== 0)
+      setValue("name", product.name);
+      setValue("category", product.category);
+      setValue("benefits", product.benefits);
+      setValue("description", product.description);
+      setValue("brand", product.brand);
+      setValue("details", product.details);
+      setValue("price", product.price);
+      setValue("size", product.size);
+      if (product.quantity)
+        setValue("quantity", product.quantity);
+      setValue("discount", product.discount);
+      if (product.photos)
+        setPhotos(product.photos);
+      setSimilarProductSize(product.ChildProduct);
+    }
+  }, [product]);
 
   const {
     fields: benefitFields,
@@ -74,27 +74,6 @@ const ProductManipulator: FC = (): JSX.Element => {
     control,
     name: "details",
   });
-  async function getProduct(id: string) {
-    return (
-      await axios.get(`${import.meta.env.VITE_BACKEND}/api/products/`, {
-        params: {
-          id: id,
-        },
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      })
-    ).data.result.rows[0];
-  }
-  async function getProductList() {
-    return (
-      await axios.get(`${import.meta.env.VITE_BACKEND}/api/products/`, {
-        params: {
-          limit: 100000,
-        },
-      })
-    ).data.result.rows;
-  }
   const onSubmit = async (data: any) => {
     const id = toast.loading("Updating")
     try {
@@ -120,18 +99,15 @@ const ProductManipulator: FC = (): JSX.Element => {
           );
         } else formdata.append("photos", photo);
       }
-      axios.patch(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
+      await axios.patch(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
         params: {
           id: productid,
         },
         headers: {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
-      }).then(() => toast.update(id, { render: "Changes has been made successfully.", type: "success", isLoading: false }))
-        .catch((error) => {
-          console.error(error);
-          return toast.update(id, { render: "There is some error", type: "error", isLoading: false });
-        })
+      })
+      toast.update(id, { render: "Changes has been made successfully.", type: "success", isLoading: false })
     } catch (error) {
       console.error(error);
       return toast.update(id, { render: "There is some error", type: "error", isLoading: false });
@@ -142,7 +118,7 @@ const ProductManipulator: FC = (): JSX.Element => {
 
   const fileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     if (photos.length && e.target.files)
-      setPhotos([...photos, ...e.target.files]);
+      setPhotos(photos.concat([...e.target.files]));
     else if (e.target.files) setPhotos([...e.target.files]);
     e.target.value = "";
   };
@@ -229,7 +205,7 @@ const ProductManipulator: FC = (): JSX.Element => {
                   className="inputField bg-white"
                   {...register("similarProduct")}
                 >
-                  {productList.map(
+                  {productList && productList.rows.map(
                     (product: any) =>
                       product.id !== productid && (
                         <option key={product.id} value={product.id}>
@@ -272,10 +248,7 @@ const ProductManipulator: FC = (): JSX.Element => {
                     type="button"
                     className="button h-10 absolute top-0"
                     onClick={() => {
-                      setPhotos([
-                        ...photos.slice(0, id),
-                        ...photos.slice(id + 1),
-                      ]);
+                      setPhotos(photos.filter((_: any, index: number) => index !== id));
                     }}
                   >
                     <RxCross2 />
@@ -353,7 +326,7 @@ const ProductManipulator: FC = (): JSX.Element => {
                 )}
               />
               <ProductInfo
-                id={productid}
+                id={productid as string}
                 name={f.name}
                 price={f.price}
                 rating={0}
@@ -362,6 +335,7 @@ const ProductManipulator: FC = (): JSX.Element => {
                 category={f.category}
                 size={f.size}
                 similar={similarProductSize}
+                quantity={1000}
                 Deals={[]}
               />
             </section>
@@ -370,7 +344,6 @@ const ProductManipulator: FC = (): JSX.Element => {
               benefits={f.benefits}
               details={f.details}
             />
-            {/* <ProductSimilar category={category}/> */}
           </div>
         </div>
       )}

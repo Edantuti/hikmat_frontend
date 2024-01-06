@@ -9,7 +9,7 @@ import useMediaQuery from "../../hooks/useMediaQuery"
 
 
 
-const ArrivalsSection = (): JSX.Element => {
+const CategorySection = (): JSX.Element => {
   const isMobile = useMediaQuery('(max-width: 960px)');
   return (
     <>
@@ -31,4 +31,4 @@ const ArrivalsSection = (): JSX.Element => {
 }
 
 
-export default ArrivalsSection
+export default CategorySection

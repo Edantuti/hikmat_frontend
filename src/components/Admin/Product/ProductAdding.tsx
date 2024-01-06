@@ -23,7 +23,7 @@ type FormValues = {
 }
 
 const ProductAdding: FC = (): JSX.Element => {
-  const [photos, setPhotos] = useState<Array<File>>([])
+  const [photos, setPhotos] = useState<File[]>([])
   const { control, watch, register, handleSubmit } = useForm<FormValues>(
     {
       defaultValues: { benefits: [], details: [], price: 0, discount: 0 },
@@ -55,10 +55,7 @@ const ProductAdding: FC = (): JSX.Element => {
       formdata.append("size", data.size)
       formdata.append("discount", data.discount)
       for (let photo of photos) {
-        if (photo instanceof File) {
-          formdata.append("photos", new Blob([await photo.arrayBuffer()], { type: photo.type }))
-        } else
-          formdata.append("photos", photo)
+        formdata.append("photos", new Blob([await photo.arrayBuffer()], { type: photo.type }))
       }
       axios.post(`${import.meta.env.VITE_BACKEND}/api/products`, formdata, {
         headers: {

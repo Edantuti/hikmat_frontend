@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ChangeEvent, FC, useState } from "react";
+import { ChangeEvent, useState } from "react";
 // import {useCookies} from 'react-cookie'
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -15,8 +15,8 @@ export type FormValues = {
   password: string;
   phone: string;
 };
-
-const Register: FC = (): JSX.Element => {
+//TODO:REMOVE FC
+const Register = (): JSX.Element => {
   const {
     register,
     getValues,

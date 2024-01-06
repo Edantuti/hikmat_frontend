@@ -1,6 +1,5 @@
-import { FC } from "react"
 
-const SocialSection: FC = (): JSX.Element => {
+const SocialSection = (): JSX.Element => {
   return (
     <>
       <section className="h-[60vh]" id="social">

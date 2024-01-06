@@ -1,12 +1,4 @@
-import { FC } from "react"
-
-interface IProductDescription {
-  description: string,
-  benefits: Array<string>,
-  details: Array<string>
-}
-
-const ProductDescription: FC<IProductDescription> = (props): JSX.Element => {
+const ProductDescription = (props: { description: string, benefits: string[], details: string[] }): JSX.Element => {
   return (
     <>
       <section className="border rounded p-10 m-2">

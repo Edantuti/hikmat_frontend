@@ -1,25 +1,16 @@
 import { FC, useEffect, useState } from "react";
 import ProductCard from "../components/ProductList/ProductCard";
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
-import axios from "axios";
+import { useFetchProducts } from "../hooks/products";
+import { useFetch } from "../hooks/fetch";
+
 const ProductListPage: FC = (): JSX.Element => {
-  const products = useLoaderData() as any;
+  const loader = useLoaderData() as any
+  const { products } = useFetchProducts(loader)
   const [nextPage, setNextPages] = useState<number[]>([]);
-  const [brands, setBrands] = useState<any>([]);
-  const [category, setCategory] = useState<any>([]);
+  const { data: brands } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/brands`)
+  const { data: category } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/categories`)
   const [_, setParams] = useSearchParams();
-  useEffect(() => {
-    retrieveBrands().then((response) => {
-      setBrands(response.data.result)
-    }).catch((error) => {
-      console.error(error)
-    })
-    retrieveCategory().then((response) => {
-      setCategory(response.data.result)
-    }).catch((error) => {
-      console.error(error)
-    })
-  }, [])
   useEffect(() => {
     setPages()
   }, [])
@@ -34,14 +25,6 @@ const ProductListPage: FC = (): JSX.Element => {
   function changePage(value: number) {
     setParams([["offset", ((value - 1) * 12) + ""]])
   };
-  async function retrieveBrands() {
-    return axios.get(`${import.meta.env.VITE_BACKEND}/api/brands`)
-  }
-
-  async function retrieveCategory() {
-    return axios.get(`${import.meta.env.VITE_BACKEND}/api/categories`)
-  }
-
   return (
     <>
       <section className="py-5">
@@ -49,17 +32,17 @@ const ProductListPage: FC = (): JSX.Element => {
           <p className="">Brand</p>
           <div className="flex mx-10 overflow-auto gap-2">
             <Link className="px-4 py-1 border bg-gray-100 rounded-full w-fit" to="/product">All</Link>
-            {brands.length > 0 && brands.map((obj: any) => (<Link key={obj.id} to={`/product?brand=${obj.name}`} className="px-4 py-1 border bg-gray-100 rounded-full w-fit whitespace-nowrap">{obj.name}</Link>))}
+            {brands && brands.map((obj: any) => (<Link key={obj.id} to={`/product?brand=${obj.name}`} className="px-4 py-1 border bg-gray-100 rounded-full w-fit whitespace-nowrap">{obj.name}</Link>))}
 
-            {brands.length === 0 && <p>No Brands are present</p>}
+            {!brands && <p>No Brands are present</p>}
           </div>
         </div>
         <div className="mx-12 flex item-center my-2">
           <p className="">Category</p>
           <div className="flex mx-10 overflow-auto gap-2">
             <Link className="px-4 py-1 border bg-gray-100 rounded-full w-fit" to="/product">All</Link>
-            {category.length > 0 && category.map((obj: any) => (<Link key={obj.id} to={`/product?category=${obj.name}`} className="px-4 py-1 border bg-gray-100 rounded-full w-fit whitespace-nowrap">{obj.name}</Link>))}
-            {category.length === 0 && <p> No Category are present</p>}
+            {category && category.map((obj: any) => (<Link key={obj.id} to={`/product?category=${obj.name}`} className="px-4 py-1 border bg-gray-100 rounded-full w-fit whitespace-nowrap">{obj.name}</Link>))}
+            {!category && <p> No Category are present</p>}
           </div>
         </div>
         <hr className="my-4" />

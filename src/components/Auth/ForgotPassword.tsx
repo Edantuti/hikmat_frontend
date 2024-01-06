@@ -4,7 +4,7 @@ type FormValues = {
   email: string
 }
 
-export default function ForgotPassword(): JSX.Element {
+const ForgotPassword = (): JSX.Element => {
   const { register, handleSubmit, formState: { isSubmitSuccessful } } = useForm<FormValues>({
     reValidateMode: "onBlur"
   })
@@ -27,3 +27,5 @@ export default function ForgotPassword(): JSX.Element {
     </>
   )
 }
+
+export default ForgotPassword

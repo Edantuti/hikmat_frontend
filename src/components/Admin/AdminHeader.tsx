@@ -1,10 +1,10 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 
 import { RiMenu3Line } from "react-icons/ri"
 import AdminMenu from './AdminMenu';
 import { Link } from 'react-router-dom';
 
-const AdminHeader: FC = (): JSX.Element => {
+const AdminHeader = (): JSX.Element => {
   const [menuState, setMenuState] = useState(false);
   return (<>
     <header className="flex justify-between px-10 py-5 border-b-2 border-neutral-300">

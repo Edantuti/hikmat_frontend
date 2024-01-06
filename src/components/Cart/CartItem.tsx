@@ -1,16 +1,7 @@
-import { FC, useState } from "react"
+import { useState } from "react"
 
 import { RiDeleteBin4Line } from "react-icons/ri"
-
-interface ICartItem {
-  item: any,
-  index: number,
-  length: number,
-  removeFromCart: (id: string) => Promise<void>
-}
-
-
-const CartItem: FC<ICartItem> = (props): JSX.Element => {
+const CartItem = (props: { item: any, index: number, length: number, removeFromCart: (id: string) => Promise<void> }): JSX.Element => {
   const [discount] = useState<number>(props.item.Deals.reduce((sum: number, curr: any) => {
     return sum + curr.discount
   }, 0))

@@ -1,19 +1,13 @@
 import axios from "axios"
-import { useEffect, useState } from "react"
 import Cookies from "js-cookie"
 import { RxCross2 } from "react-icons/rx"
 import { changeAuthentication } from "../../../slice/AuthSlice"
 import { useDispatch } from "react-redux"
+import { useFetch } from "../../../hooks/fetch"
 //TODO:Add Toast
 export default function CategoryListing() {
-  const [data, setData] = useState<any>([])
+  const { data, setData } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/categories`)
   const dispatch = useDispatch()
-  useEffect(() => {
-    getCategories().then((response) => setData(response.data.result))
-  }, [])
-  function getCategories() {
-    return axios.get(`${import.meta.env.VITE_BACKEND}/api/categories`)
-  }
   function deleteCategory(id: string) {
     try {
       axios.delete(`${import.meta.env.VITE_BACKEND}/api/admin/categories`, {
@@ -24,7 +18,8 @@ export default function CategoryListing() {
           "Authorization": `Bearer ${Cookies.get("token")}`
         }
       }).then(() => {
-        getCategories().then((response) => setData(response.data.result))
+        if (data)
+          setData(data.filter((item: any) => item.id !== id))
       })
     } catch (error: any) {
       console.error(error)
@@ -36,14 +31,14 @@ export default function CategoryListing() {
   }
   return (
     <>
-      <section className="m-2">
-        <h2 className="text-2xl">Categories</h2>
-        {data.length > 0 ? data.map((obj: any) => {
+      <section className="md:grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-1 grid-flow-dense m-2">
+        <h2 className="text-2xl col-span-8 ">Categories</h2>
+        {data ? data.map((obj: any) => {
 
           return (
-            <div key={obj.id} className="mt-4 flex lg:w-60 justify-between">
-              <p>{obj.name}</p>
-              <button className="border px-2 py-1" onClick={() => deleteCategory(obj.id)}><RxCross2 /></button>
+            <div key={obj.id} className="mt-4 flex flex-col  w-60 h-60 justify-between border border-gray-300 rounded-md">
+              <p className="flex justify-center items-center h-full text-xl">{obj.name}</p>
+              <button className="border px-2 py-1 flex justify-center transition-colors hover:bg-red-400 hover:border-red-400" onClick={() => deleteCategory(obj.id)}><RxCross2 /></button>
             </div>)
         }) : (<p className="flex items-center justify-center h-screen text-2xl">no Category is present</p>)}
       </section>

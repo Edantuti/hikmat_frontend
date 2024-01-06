@@ -1,11 +1,16 @@
-import { FC } from "react"
-
 import profileUrl from "../../assets/image.png"
 import profile from "../../assets/person.jpg"
-import { TestimonalsType } from "./Testimonals"
 import TestimonalsCard from "./TestimonalsCard"
 
-const TestimonalsSection: FC = (): JSX.Element => {
+
+type TestimonalsType = {
+  profile_url: string,
+  username: string,
+  description: string,
+  rating: number,
+}
+
+const TestimonalsSection = (): JSX.Element => {
 
   const TestimonalsObjects: TestimonalsType[] = [{
     profile_url: profileUrl,

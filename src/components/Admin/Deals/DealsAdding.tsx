@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useState, ChangeEvent } from "react";
 import Cookies from 'js-cookie'
 import { useFieldArray, useForm } from "react-hook-form"
 import { ToastContainer, toast } from "react-toastify";
 import { RxCross2 } from "react-icons/rx";
+import { useFetchProducts } from "../../../hooks/products";
 
 type FormValues = {
   name: string,
@@ -11,7 +12,7 @@ type FormValues = {
   productIds: any,
   date: any,
 }
-export default function DealsAdding() {
+const DealsAdding = () => {
   const { register, control, handleSubmit } = useForm<FormValues>({
     defaultValues: { productIds: [] },
     reValidateMode: "onBlur"
@@ -21,40 +22,31 @@ export default function DealsAdding() {
     name: "productIds"
   })
   const [error, setError] = useState<boolean>(false);
-  const [products, setProducts] = useState<any[]>([]);
+  const { products } = useFetchProducts({ limit: 0 })
   const [file, changeFile] = useState<File>();
   const [fileUrl, changeFileUrl] = useState<string>("https://dummyimage.com/384x256");
-  useEffect(() => {
-    getProducts().then((response) => setProducts(response.data.result.rows))
-  }, [])
-  async function getProducts() {
-    return axios.get(`${import.meta.env.VITE_BACKEND}/api/products`, {
-      params: {
-        limit: 10000
-      }
-    })
-  }
   const fileChanger = (event: ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) return;
     changeFile(event.target.files[0]);
     changeFileUrl(URL.createObjectURL(event.target.files[0]));
   };
   async function onSubmit(data: FormValues) {
-    setError(false)
-    if (file === undefined) return setError(true);
-    const formdata = new FormData()
-    formdata.append("name", data.name)
-    formdata.append("discount", data.discount.toString())
-    formdata.append("productIds", JSON.stringify(data.productIds))
-    formdata.append("expiry_date", data.date)
-    if (file)
-      formdata.append("profile_url", new Blob([await file.arrayBuffer()], { type: file.type }))
-    axios.post(`${import.meta.env.VITE_BACKEND}/api/deals`, formdata, { headers: { Authorization: `Bearer ${Cookies.get("token")}` } }).then(() => {
+    try {
+      setError(false)
+      if (file === undefined) return setError(true);
+      const formdata = new FormData()
+      formdata.append("name", data.name)
+      formdata.append("discount", data.discount.toString())
+      formdata.append("productIds", JSON.stringify(data.productIds))
+      formdata.append("expiry_date", data.date)
+      if (file)
+        formdata.append("profile_url", new Blob([await file.arrayBuffer()], { type: file.type }))
+      await axios.post(`${import.meta.env.VITE_BACKEND}/api/admin/deals`, formdata, { headers: { Authorization: `Bearer ${Cookies.get("token")}` } })
       toast.success("Your deal has been added.")
-    }).catch((error) => {
-      console.error(error)
-      toast.error("Error in submission")
-    })
+    } catch (error) {
+      if (import.meta.env.DEV) console.error(error)
+      toast.error("Something went wrong")
+    }
   }
   return (
     <>
@@ -84,7 +76,7 @@ export default function DealsAdding() {
           {fields.length === 0 && <p> No products added</p>}
           {fields.map((field, id) => (<div key={field.id} className="flex gap-2">
             <select className="inputField w-96" {...register(`productIds.${id}`, { required: true })}>
-              {products.map((obj: any) => (<option key={obj.id} value={obj.id}>{obj.name}</option>))}
+              {products && products.rows.map((obj: any) => (<option key={obj.id} value={obj.id}>{obj.name}</option>))}
             </select>
             <button onClick={() => remove(id)} className="button"><RxCross2 /></button>
           </div>
@@ -101,11 +93,4 @@ export default function DealsAdding() {
     </>
   )
 }
-
-          // {fields.map((field, id) =>(<div key={field.id} className="flex gap-2">
-          //       <select className="inputField" {...register(`productIds.${id}`, { required: true })}>
-          //         {products.map((obj: any) => (<option key={obj.id} value={obj.id}>{obj.name}</option>))}
-          //       </select>
-          //       <button onClick={()=>remove(id)} className="button"><RxCross2 /></button>
-          //     <div>)
-          // )}
+export default DealsAdding

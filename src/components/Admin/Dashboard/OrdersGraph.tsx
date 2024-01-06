@@ -1,19 +1,8 @@
 import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis, VictoryLabel } from 'victory'
 import { ordersDataConvertingToMap } from './dataFetchers.ts'
-import { useEffect, useState } from "react";
 
-
-
-export default function OrdersGraph(): JSX.Element {
-  const [data, setData] = useState<{ x: string, y: number }[]>()
-
-  useEffect(
-    () => {
-      ordersDataConvertingToMap().then((response: { x: string, y: number }[]) => {
-        setData(response)
-      })
-    }
-    , [])
+const OrdersGraph = () => {
+  const data = ordersDataConvertingToMap()
 
   return (
     <>
@@ -55,3 +44,4 @@ export default function OrdersGraph(): JSX.Element {
     </>
   )
 }
+export default OrdersGraph

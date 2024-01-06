@@ -1,4 +1,4 @@
-import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import CartItem from "../components/Cart/CartItem";
 import axios from "axios";
@@ -10,40 +10,29 @@ import { useNavigate } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md"
 import PageRedirect from "../components/Auth/PageRedirect";
-import { changeAuthentication } from "../slice/AuthSlice";
 import { useForm } from "react-hook-form";
 import { ToastContainer, toast } from "react-toastify";
+import { totalDiscount, totalPrice, useFetchCart } from "../hooks/cart";
+import { useFetch } from "../hooks/fetch";
 
 
-const CartPage: FC = (): JSX.Element => {
+const CartPage = (): JSX.Element => {
   const dispatch = useDispatch();
-  const cart = useSelector((state: any) => {
-    return state.cart.products;
-  });
   const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [price, setPrice] = useState(0);
-  const [discount, setDiscount] = useState(0);
-  const [addressData, setAddressData] = useState<any>(undefined)
   const auth = useSelector((state: any) => state.auth.authenticated.value);
   const user = useSelector((state: any) => state.auth.userData);
-  const [isOutOfStock, setIsOutOfStock] = useState<boolean>(false)
+  const { cart, discount, setDiscount, outOfStock, setOutOfStock } = useFetchCart(user.userid)
+  const { data: addressData, setData: setAddressData } = useFetch<{ address: string, city: string, state: string, pincode: string }>(`${import.meta.env.VITE_BACKEND}/api/address`, { userid: user.userid })
   const [changeAddress, setChangeAddress] = useState<boolean>(false)
-  useEffect(() => {
-    cartRetrieve();
-    addressRetrieve();
-  }, []);
   async function checkout() {
     if (cart.length == 0) return
     if (addressData === undefined) return
     try {
-      let amount = 0;
-      for (let i of cart) {
-        const dealsDiscount = i.Deals.reduce((total: number, curr: any) => {
-          return total + curr.discount
-        }, 0)
-        amount += i.cart_quantity * Math.floor(i.price - i.price * ((i.discount + dealsDiscount) / 100))
-      }
+      let amount = cart.reduce(
+        (sum: number, curr: any, index: number) => sum + (curr.cart_quantity * Math.floor(curr.price - (curr.price * ((discount[index]) / 100))))
+        , 0
+      );
       const { data: orders } = await axios.post(`${import.meta.env.VITE_BACKEND}/api/checkout`, {
         "amount": (amount + Math.floor(amount * 0.02)) * 100,
         "currency": "INR",
@@ -52,6 +41,7 @@ const CartPage: FC = (): JSX.Element => {
           "Authorization": `Bearer ${Cookies.get("token")}`
         }
       })
+      //TODO:EDIT AFTER LAUNCHING
       const options = {
         "key": import.meta.env.VITE_KEY,
         "amount": orders.amount,
@@ -82,8 +72,6 @@ const CartPage: FC = (): JSX.Element => {
               }
             }).then(() => {
               dispatch(setProducts([]))
-              totalDiscount(cart)
-              totalPrice(cart)
               toast.success("Successfully placed your order.")
             }).catch((error) => {
               console.error(error)
@@ -107,68 +95,7 @@ const CartPage: FC = (): JSX.Element => {
     } catch (error) {
       console.error(error)
     }
-
-
   }
-  function totalDiscount(data: any) {
-    return data.reduce((total: number, current: any) => {
-      const discount = current.Deals.reduce((sum: number, curr: any) => {
-        return sum + curr.discount
-      }, 0)
-      return (
-        total +
-        current.cart_quantity * (current.price * ((current.discount + discount) / 100))
-      );
-    }, 0)
-  }
-
-  function totalPrice(data: any) {
-    return data.reduce((total: any, current: any): number => {
-      return total + current.cart_quantity * current.price;
-    }, 0)
-  }
-
-  const addressRetrieve = async () => {
-    try {
-      console.log(user)
-      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/address`, {
-        headers: {
-          "Authorization": `Bearer ${Cookies.get("token")}`
-        },
-        params: {
-          userid: user.userid
-        }
-      })
-      setAddressData(data.result)
-    } catch (error) {
-      console.error(error)
-
-    }
-  }
-
-  const cartRetrieve = async () => {
-    try {
-      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND}/api/cart/`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      });
-      for (let i of data) {
-        if (i.quantity === 0) {
-          setIsOutOfStock(true)
-          break;
-        }
-      }
-      setDiscount(totalDiscount(data));
-      setPrice(totalPrice(data));
-      dispatch(setProducts(data));
-    } catch (error: any) {
-      if (error.response.status === 401) {
-        dispatch(changeAuthentication(false))
-        Cookies.remove("token")
-      }
-    }
-  };
 
   const removeCartItem = async (id: string) => {
     await axios.delete(`${import.meta.env.VITE_BACKEND}/api/cart`, {
@@ -179,23 +106,13 @@ const CartPage: FC = (): JSX.Element => {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
     });
-
-    const index = cart.findIndex((item: any) => {
-      if (item.cartid === id) return true;
-    });
-
-    const cartData = [...cart.slice(0, index), ...cart.slice(index + 1)];
+    const cartData = cart.filter((item: any) => item.cartid !== id);
 
     setDiscount(totalDiscount(cartData));
-    setPrice(totalPrice(cartData));
     dispatch(setProducts(cartData));
-    let counter = cart.length()
-    for (let i of cart) {
-      if (i.quantity != 0) {
-        counter--;
-      }
-    }
-    setIsOutOfStock(counter !== 0)
+
+    let item = cart.findIndex((item: any) => item.quantity === 0)
+    setOutOfStock(item !== undefined)
   };
 
   if (!auth) {
@@ -228,17 +145,18 @@ const CartPage: FC = (): JSX.Element => {
           </div>
           <p className="w-fit ml-10 text-lg lg:mt-auto">
             <b>Subtotal:</b>
-            {Math.floor(price)}
+
+            {Math.floor(totalPrice(cart))}
           </p>
           <p className="w-fit ml-10 text-lg">
             <b>discount:</b>
-            {Math.floor(discount)}
+            {Math.floor(cart.reduce((sum: number, curr: any, index: number) => sum + curr.cart_quantity * (curr.price * (discount[index]) / 100), 0))}
           </p>
           <p className="w-fit ml-10 text-lg lg:mb-auto">
             <b>Grand total:</b>
-            {price - Math.floor(discount)}
+            {Math.floor(totalPrice(cart)) - Math.floor(cart.reduce((sum: number, curr: any, index: number) => sum + curr.cart_quantity * (curr.price * (discount[index]) / 100), 0))}
           </p>
-          {isOutOfStock ? <div className="text-lg absolute bottom-0 h-20 items-center flex w-full bg-slate-100 py-2 px-6">Remove Out of Stock item(s)</div> :
+          {outOfStock ? <div className="text-lg absolute bottom-0 h-20 items-center flex w-full bg-slate-100 py-2 px-6">Remove Out of Stock item(s)</div> :
             <button
               className="text-2xl absolute bottom-0 h-20 items-center flex w-full bg-slate-100 py-2 px-6 hover:text-white hover:bg-[#004449] transition-colors rounded-bl shadow font-poppins"
               onClick={() => checkout()}
@@ -263,7 +181,7 @@ type AddressModalType = {
   address: any
 }
 
-type FormValues = {
+type Address = {
   address: string,
   city: string,
   state: string,
@@ -271,13 +189,13 @@ type FormValues = {
 }
 
 const AddressModal = (props: AddressModalType) => {
-  const { register, setError, handleSubmit, formState: { errors } } = useForm<FormValues>(
+  const { register, setError, handleSubmit, formState: { errors } } = useForm<Address>(
     {
       reValidateMode: "onBlur"
     }
   )
 
-  async function onSubmit(data: FormValues) {
+  async function onSubmit(data: Address) {
     try {
       const { data: PincodeData } = await axios.get(`https://api.postalpincode.in/pincode/${data.pincode}`)
       if (PincodeData[0].Status !== "Success") {

@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { RiFacebookBoxLine, RiInstagramLine, RiTwitterFill } from "react-icons/ri"
+// TODO:REMOVE FC
 const Footer: FC = (): JSX.Element => {
   return (
     <>

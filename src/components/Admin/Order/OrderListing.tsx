@@ -1,18 +1,19 @@
-import { FC, useState } from 'react'
+import { useState } from 'react'
 import { FaRupeeSign } from 'react-icons/fa'
-import { useLoaderData } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { changeAuthentication } from '../../../slice/AuthSlice'
+import { useFetch } from '../../../hooks/fetch'
 //TODO:Add Toast
-const OrderListing: FC = (): JSX.Element => {
-  const data = useLoaderData() as any
+const OrderListing = () => {
+  const { data } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/orders/all`)
+
   return (
     <>
       <section className="m-2">
         <h1 className="m-2 underline text-xl">Orders:</h1>
-        {data.map((order: any) => (
+        {data && data.map((order: any) => (
           <OrderComponent key={order.id} {...order} />
         ))}
       </section>

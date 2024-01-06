@@ -1,29 +1,12 @@
-import axios from 'axios';
-import { FC, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import Cookies from 'js-cookie'
+import { useFetch } from '../../hooks/fetch';
 
-const ProfileDetails: FC = (): JSX.Element => {
+const ProfileDetails = (): JSX.Element => {
   const userData = useSelector((state: any) => state.auth.userData)
-  const [data, setData] = useState<any>();
-  //TODO:Design the User Page
-  useEffect(() => {
-    retrieveAddress().then((response: any) => setData(response.data.result)).catch((error) => console.error(error))
+  const { data } = useFetch<{ address: string, city: string, state: string, pincode: string }>(`${import.meta.env.VITE_BACKEND}/api/address`, { userid: userData.userid })
 
-  }, [])
-  async function retrieveAddress() {
-    return axios.get(`${import.meta.env.VITE_BACKEND}/api/address`, {
-      headers: {
-        "Authorization": `Bearer ${Cookies.get("token")}`
-      },
-      params: {
-        userid: userData.userid
-      }
-    })
-  }
   return (
     <>
-
       <section className="w-[90%] h-[75vh] space-y-2 border mt-2 rounded p-4">
         <h2 className="text-3xl">Profile Details</h2>
         <div className="space-y-2">

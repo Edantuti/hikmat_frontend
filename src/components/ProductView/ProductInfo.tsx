@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { BsShare } from "react-icons/bs"
 import axios from "axios"
 import { setProducts } from "../../slice/CartSlice"
@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation } from "react-router-dom"
 import { FaRupeeSign } from "react-icons/fa"
-// import { useCookies } from "react-cookie"
 import Cookies from "js-cookie"
 import { changeAuthentication } from "../../slice/AuthSlice"
 export type OfferType = {
@@ -15,53 +14,18 @@ export type OfferType = {
   description: string
 }
 
-interface IProductInfo {
-  id: string,
-  name: string,
-  price: number,
-  rating: number,
-  discount: number,
-  brand: string,
-  category: string,
-  size: string,
-  similar: any,
-  Deals: any,
-  quantity?: number
-}
-
-
-const ProductInfo: FC<IProductInfo> = (props): JSX.Element => {
+const ProductInfo = (props:
+  { id: string, name: string, price: number, rating: number, discount: number, brand: string, category: string, size: string, similar: any, Deals: any, quantity: number }): JSX.Element => {
   const [quantity, setQuantity] = useState(1)
   const dispatch = useDispatch()
   const userData = useSelector((state: any) => state.auth.userData)
   const location = useLocation();
   const cart = useSelector((state: any) => state.cart.products)
   useEffect(() => {
-    getCart()
-  }, [])
-  useEffect(() => {
-    setQuantity(cart.find((obj: any) => { return obj.id === props.id }) === undefined ? 1 : cart.find((obj: any) => { return obj.id === props.id }).cart_quantity)
+    let cart_item = cart.find((obj: any) => { return obj.id === props.id })
+    setQuantity(cart_item === undefined ? 1 : cart_item.cart_quantity)
   }, [props.id])
 
-  function getCart() {
-    axios.get(`${import.meta.env.VITE_BACKEND}/api/cart`, {
-      headers: {
-        "Authorization": `Bearer ${Cookies.get('token')}`
-      }
-    }).then((response) => {
-      dispatch(setProducts(response.data))
-      for (let i = 0; i < cart.length; i++) {
-        if (cart[i].id === props.id) {
-          setQuantity(cart[i].cart_quantity)
-        }
-      }
-    }).catch((error) => {
-      if (error.status === 401) {
-        dispatch(changeAuthentication(false))
-        Cookies.remove("token")
-      }
-    })
-  }
   const addCartToProduct = () => {
     axios.post(`${import.meta.env.VITE_BACKEND}/api/cart/`,
       {

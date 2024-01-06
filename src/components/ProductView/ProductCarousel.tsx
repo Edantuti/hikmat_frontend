@@ -1,4 +1,4 @@
-import { FC, useState } from "react"
+import { useState } from "react"
 
 import { Swiper, SwiperClass, SwiperSlide } from "swiper/react"
 
@@ -10,12 +10,8 @@ import 'swiper/css/thumbs'
 
 import { Thumbs, FreeMode, Navigation } from "swiper/modules"
 
-interface IProductCarousel {
-  image_urls: Array<string>
-}
-
-const ProductCarousel: FC<IProductCarousel> = (props): JSX.Element => {
-  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass | null>(null);
+const ProductCarousel = (props: { image_urls: string[] }): JSX.Element => {
+  const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass>();
   return (
     <>
       <div className="lg:w-[35vw]  my-2 md:m-2 p-2">

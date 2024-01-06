@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import Cookies from 'js-cookie'
 import { toast } from 'react-toastify';
 import { useSelector } from 'react-redux';
+import { useFetch } from '../../hooks/fetch';
 
 type FormValues = {
   address: string,
@@ -13,33 +14,21 @@ type FormValues = {
 }
 
 const AddressUpdateForm = () => {
+  const user = useSelector((state: any) => state.auth.userData)
   const { register, setValue, handleSubmit, formState: { errors } } = useForm<FormValues>(
     {
       reValidateMode: "onBlur"
     }
   )
-  const user = useSelector((state: any) => state.auth.userData)
+  const { data } = useFetch<{ address: string, city: string, pincode: number, state: string }>(`${import.meta.env.VITE_BACKEND}/api/address`, { userid: user.userid })
   useEffect(() => {
-    onLoadRetrieve().then((response: any) => {
-      setValue("address", response.data.result.address);
-      setValue("city", response.data.result.city);
-      setValue("pincode", response.data.result.pincode);
-      setValue("state", response.data.result.state);
-    }).catch((error) => {
-      console.error(error)
-    })
-  }, [])
-
-  async function onLoadRetrieve() {
-    return axios.get(`${import.meta.env.VITE_BACKEND}/api/address`, {
-      headers: {
-        "Authorization": `Bearer ${Cookies.get("token")}`
-      },
-      params: {
-        userid: user.userid
-      }
-    });
-  }
+    if (data) {
+      setValue("address", data.address);
+      setValue("city", data.city);
+      setValue("pincode", data.pincode);
+      setValue("state", data.state);
+    }
+  }, [data])
   async function onSubmit(data: FormValues) {
     try {
       const { data: PincodeData } = await axios.get(`https://api.postalpincode.in/pincode/${data.pincode}`)

@@ -1,13 +1,14 @@
-import { FC } from "react"
 
-import { TestimonalsType } from "./Testimonals"
 import { FaStar } from "react-icons/fa"
 
-interface ITestimonalsProps {
-  testimonals: TestimonalsType
+type TestimonalsType = {
+  profile_url: string,
+  username: string,
+  description: string,
+  rating: number,
 }
 
-const TestimonalsCard: FC<ITestimonalsProps> = ({ testimonals }): JSX.Element => {
+const TestimonalsCard = ({ testimonals }: { testimonals: TestimonalsType }): JSX.Element => {
   return (
     <>
       <article className="p-10  shadow w-96 bg-sky-400 rounded">

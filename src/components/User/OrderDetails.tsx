@@ -1,56 +1,22 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { FC, useEffect, useState } from "react";
+import { useState } from "react";
 import { FaCheck, FaHourglass } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { setProducts } from "../../slice/CartSlice";
-import { changeAuthentication, setUserData } from "../../slice/AuthSlice";
-const OrderDetails: FC = (): JSX.Element => {
-  const user = useSelector((state: any) => state.auth.userData);
-  const dispatch = useDispatch();
-  const [data, setData] = useState<any[]>([]);
-
-  useEffect(() => {
-    retrieveOrders();
-  }, []);
-  function retrieveOrders() {
-    axios
-      .get(`${import.meta.env.VITE_BACKEND}/api/orders`, {
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-        params: {
-          userid: user.userid,
-        },
-      })
-      .then((response) => {
-        const orders = response.data.result;
-        orders.sort((a: any, b: any) => {
-          if (new Date(a.createdAt).getTime() < new Date(b.createdAt).getTime())
-            return 1;
-          else return -1;
-        });
-        setData(orders);
-      })
-      .catch((errors) => {
-        if (errors.code === "ERR_BAD_REQUEST") {
-          dispatch(setProducts([]));
-          dispatch(changeAuthentication(false));
-          dispatch(setUserData({}));
-        }
-      });
-  }
+import { useFetch } from "../../hooks/fetch";
+import { useSelector } from "react-redux";
+const OrderDetails = (): JSX.Element => {
+  const user = useSelector((state: any) => state.auth.userData)
+  const { data } = useFetch<[]>(`${import.meta.env.VITE_BACKEND}/api/orders`, { userid: user.userid })
   return (
     <>
       <section className="w-full lg:border rounded lg:m-2">
         <div className="overflow-visible">
-          {!data.length && (
+          {!data && (
             <p className="h-96 md:text-2xl font-poppins flex mx-auto w-fit my-40">
               Didn't place any orders yet?
             </p>
           )}
-          {data &&
-            data.map((order: any) => <OrderItem key={order.id} {...order} />)}
+          {data && data.map((order: any) => <OrderItem key={order.id} {...order} />)}
         </div>
       </section>
     </>
@@ -58,26 +24,28 @@ const OrderDetails: FC = (): JSX.Element => {
 };
 
 function OrderItem(props: any) {
-  console.log(props)
   const [cancelled, setCancelled] = useState<boolean>(props.cancelled);
   async function cancelOrder(e: any) {
     e.currentTarget.checked = true;
-    const { data } = await axios.patch(
-      `${import.meta.env.VITE_BACKEND}/api/orders/delivered`,
-      { cancelled: true },
-      {
-        params: {
-          id: props.id,
+    try {
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_BACKEND}/api/orders/delivered`,
+        { cancelled: true },
+        {
+          params: {
+            id: props.id,
+          },
+          headers: {
+            Authorization: `Bearer ${Cookies.get("token")}`,
+          },
         },
-        headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
-        },
-      },
-    );
-    if (data.status === "SUCCESS") {
-      setCancelled(true);
-    } else {
-      console.error(data.error);
+      );
+      if (data.status === "SUCCESS") {
+        setCancelled(true);
+      }
+    } catch (error) {
+      if (import.meta.env.DEV)
+        console.error(error)
     }
   }
 

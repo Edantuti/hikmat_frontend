@@ -8,10 +8,7 @@ import ProductsGraph from "./Dashboard/ProductsGraph";
 import { Link } from "react-router-dom";
 import { GoPackage } from "react-icons/go"
 import { SiBrandfolder } from "react-icons/si";
-
-
-
-export default function AdminDashboard(): JSX.Element {
+const AdminDashboard = (): JSX.Element => {
   return (
     <>
       <section className="md:grid md:grid-cols-[40vw_59%] gap-2">
@@ -24,7 +21,7 @@ export default function AdminDashboard(): JSX.Element {
   )
 }
 
-function FrontPageEditing(): JSX.Element {
+const FrontPageEditing = (): JSX.Element => {
   //TODO:Create a pages for deals also 
   return (
     <>
@@ -54,7 +51,7 @@ function FrontPageEditing(): JSX.Element {
   )
 }
 
-function ProductsOrdersSection(): JSX.Element {
+const ProductsOrdersSection = (): JSX.Element => {
   return (
     <>
       <article className=" ml-2 mt-2 order-4 rounded border md:grid md:grid-cols-[50%_50%] grid-flow-dense">
@@ -74,3 +71,5 @@ function ProductsOrdersSection(): JSX.Element {
     </>
   )
 }
+
+export default AdminDashboard

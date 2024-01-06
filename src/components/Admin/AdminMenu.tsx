@@ -1,11 +1,7 @@
-import { Dispatch, FC, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { Link } from "react-router-dom";
 
-interface IVisibilityProp {
-  visibility: boolean;
-  changeVisibility: Dispatch<SetStateAction<boolean>>;
-}
-const AdminMenu: FC<IVisibilityProp> = (prop): JSX.Element => {
+const AdminMenu = (prop: { visibility: boolean, changeVisibility: Dispatch<SetStateAction<boolean>> }): JSX.Element => {
   return (
     <>
       <nav

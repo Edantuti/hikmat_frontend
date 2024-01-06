@@ -2,16 +2,16 @@ import { FC } from "react";
 import ProductCarousel from "../components/ProductView/ProductCarousel";
 import ProductInfo from "../components/ProductView/ProductInfo";
 import ProductDescription from "../components/ProductView/ProductDescription";
-import { ProductType } from "../components/ProductList/Product";
-
-import { useLoaderData } from "react-router-dom";
 import ProductReview from "../components/ProductView/ProductReview";
+import { useFetchProductByID } from "../hooks/products";
+import { useParams } from "react-router-dom";
 const ProductViewPage: FC = (): JSX.Element => {
-  const productData = useLoaderData() as ProductType;
+  const { productId } = useParams()
+  const { product: productData } = useFetchProductByID(productId as string)
   return (
     <>
-      <section className="md:flex">
-        <ProductCarousel image_urls={productData.photos} />
+      {productData && <section className="md:flex">
+        <ProductCarousel image_urls={productData.photos as string[]} />
         <ProductInfo
           id={productData.id}
           name={productData.name}
@@ -23,15 +23,15 @@ const ProductViewPage: FC = (): JSX.Element => {
           size={productData.size}
           similar={productData.ChildProduct}
           Deals={productData.Deals}
-          quantity={productData.quantity}
+          quantity={productData.quantity as number}
         />
-      </section>
-      <ProductDescription
+      </section>}
+      {productData && <ProductDescription
         description={productData.description}
         benefits={productData.benefits}
         details={productData.details}
-      />
-      <ProductReview productid={productData.id} reviews={productData.Reviews} />
+      />}
+      {productData && <ProductReview productid={productData.id} reviews={productData.Reviews} />}
     </>
   );
 };

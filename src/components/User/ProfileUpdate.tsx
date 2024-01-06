@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSelector } from "react-redux";
@@ -15,23 +15,19 @@ type FormValues = {
   phone: string;
 };
 export default function ProfileUpdate() {
-  const { register, setValue, handleSubmit } = useForm<FormValues>({
-    defaultValues: {},
+  const userData = useSelector((state: any) => state.auth.userData);
+  const { register, handleSubmit } = useForm<FormValues>({
+    defaultValues: {
+      last: userData.last,
+      first: userData.first,
+      email: userData.email,
+      phone: userData.phone
+    },
     reValidateMode: "onBlur",
   });
-  const userData = useSelector((state: any) => state.auth.userData);
   const dispatch = useDispatch()
   const [fileUrl, changeFileUrl] = useState<string>(userData.profile_url);
   const [file, changeFile] = useState<File>();
-  useEffect(() => {
-    setDefaultValues();
-  });
-  function setDefaultValues() {
-    setValue("last", userData.last);
-    setValue("first", userData.first);
-    setValue("email", userData.email);
-    setValue("phone", userData.phone);
-  }
   async function onSubmit(profileData: any) {
     try {
       const formdata = new FormData();
@@ -47,10 +43,18 @@ export default function ProfileUpdate() {
           Authorization: `Bearer ${Cookies.get("token")}`,
         },
       });
-      dispatch(setUserData({ ...userData, profile_url: data.profile_url }))
+      dispatch(setUserData({
+        userid: userData.userid,
+        first: profileData.first,
+        last: profileData.last,
+        email: profileData.email,
+        phone: profileData.phone,
+        admin: userData.admin,
+        profile_url: data.profile_url
+      }))
       toast.success("Your Profile is updated!")
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
   }
   const fileChanger = (event: ChangeEvent<HTMLInputElement>) => {

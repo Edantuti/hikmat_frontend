@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRupeeSign, FaStar } from "react-icons/fa";
 import { BiSolidCategoryAlt } from "react-icons/bi"
 import { SiBrandfolder } from "react-icons/si"
@@ -6,11 +6,7 @@ import { Link } from "react-router-dom";
 import { ProductType } from "./Product.d";
 import { AiOutlineTag } from "react-icons/ai";
 
-interface IProductProps {
-  product: ProductType;
-}
-
-const ProductCard: FC<IProductProps> = ({ product }): JSX.Element => {
+const ProductCard = ({ product }: { product: ProductType }): JSX.Element => {
   const [discount, setDiscount] = useState<number>(product.discount)
   useEffect(() => {
     discountSummation()
@@ -24,7 +20,7 @@ const ProductCard: FC<IProductProps> = ({ product }): JSX.Element => {
     <>
       <div className="w-72 m-5 rounded h-[48vh] border relative">
         <div className="h-48 w-72 aspect-square rounded-t p-1 flex justify-center">
-          <img loading="lazy" src={product.photos[0] + "?type=low"} alt={product.name} className="rounded-t aspect-square overflow-hidden h-auto" />
+          {product.photos && <img loading="lazy" src={product.photos[0] + "?type=low"} alt={product.name} className="rounded-t aspect-square overflow-hidden h-auto" />}
         </div>
         <article className="">
           <Link to={`/product/${product.id}`}>
