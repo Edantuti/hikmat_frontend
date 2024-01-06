@@ -205,6 +205,7 @@ const ProductAdding: FC = (): JSX.Element => {
               id={""}
               name={f.name}
               price={f.price}
+              quantity={10}
               rating={0}
               discount={f.discount}
               brand={f.brand}
