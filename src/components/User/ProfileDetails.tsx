@@ -3,8 +3,10 @@ import { useFetch } from '../../hooks/fetch';
 
 const ProfileDetails = (): JSX.Element => {
   const userData = useSelector((state: any) => state.auth.userData)
-  const { data } = useFetch<{ address: string, city: string, state: string, pincode: string }>(`${import.meta.env.VITE_BACKEND}/api/address`, { userid: userData.userid })
-
+  const { data, isLoading } = useFetch<{ address: string, city: string, state: string, pincode: string }>(`${import.meta.env.VITE_BACKEND}/api/address`, { userid: userData.userid })
+  if (isLoading) {
+    return <h1 className="flex items-center justify-center">Loading...</h1>
+  }
   return (
     <>
       <section className="w-[90%] h-[75vh] space-y-2 border mt-2 rounded p-4">

@@ -48,11 +48,11 @@ const router = createBrowserRouter(
           path="/product/"
           loader={
             ({ request }) => {
-              const url = new URLSearchParams(request.url)
+              const url = new URLSearchParams(request.url.split("?")[1])
               return {
-                category: url.get("category"),
-                brand: url.get("brand"),
-                offset: url.get("offset")
+                category: url.get('category'),
+                brand: url.get('brand'),
+                offset: url.get('offset')
               }
             }
           }

@@ -8,7 +8,7 @@ import { useFetch } from "../../hooks/fetch"
 
 //TODO:Deal Section Product improvement
 const DealsSection = (): JSX.Element => {
-  const { data: deals } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/deals`)
+  const { data: deals, isLoading } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/deals`)
   function checkDealsExpiry(date: string) {
     return new Date(date) >= new Date()
   }
@@ -29,7 +29,8 @@ const DealsSection = (): JSX.Element => {
             ))
             }
           </Swiper>
-          {!deals && <p>No deals available right now</p>}
+          {isLoading && <p>Loading Deals ...</p>}
+          {!deals && !isLoading && <p>No deals available right now</p>}
         </div>
       </section>
     </>

@@ -4,7 +4,7 @@ import { RxCross2 } from "react-icons/rx"
 import { useFetch } from "../../../hooks/fetch"
 
 export default function BrandListing() {
-  const { data, setData } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/brands`)
+  const { data, setData, isLoading } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/brands`)
   function deleteBrand(id: string) {
     try {
       axios.delete(`${import.meta.env.VITE_BACKEND}/api/admin/brands`, {
@@ -21,6 +21,9 @@ export default function BrandListing() {
     } catch (error) {
       console.error(error)
     }
+  }
+  if (isLoading) {
+    return <h1 className="text-xl flex items-center justify-center">Loading...</h1>
   }
   return (
     <>

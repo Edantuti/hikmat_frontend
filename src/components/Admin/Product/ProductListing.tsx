@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { changeAuthentication } from '../../../slice/AuthSlice'
 import { useFetchProducts } from '../../../hooks/products'
 const ProductListing = () => {
-  const { products, setProducts } = useFetchProducts({ limit: 0 })
+  const { products, setProducts, isLoading } = useFetchProducts({ limit: 0 })
   const dispatch = useDispatch()
   async function removeProduct(id: string) {
     try {
@@ -30,6 +30,9 @@ const ProductListing = () => {
         Cookies.remove("token")
       }
     }
+  }
+  if (isLoading) {
+    return <h1 className="flex items-center justify-center">Loading Products...</h1>
   }
   return (
     <>

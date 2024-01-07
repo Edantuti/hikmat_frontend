@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux"
 import { useFetch } from "../../../hooks/fetch"
 //TODO:Add Toast
 export default function CategoryListing() {
-  const { data, setData } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/categories`)
+  const { data, setData, isLoading } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/categories`)
   const dispatch = useDispatch()
   function deleteCategory(id: string) {
     try {
@@ -28,6 +28,9 @@ export default function CategoryListing() {
         Cookies.remove("token")
       }
     }
+  }
+  if (isLoading) {
+    return <h1>Loading... </h1>
   }
   return (
     <>

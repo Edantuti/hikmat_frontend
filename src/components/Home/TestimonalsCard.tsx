@@ -1,14 +1,14 @@
 
 import { FaStar } from "react-icons/fa"
 
-type TestimonalsType = {
-  profile_url: string,
-  username: string,
-  description: string,
-  rating: number,
-}
-
-const TestimonalsCard = ({ testimonals }: { testimonals: TestimonalsType }): JSX.Element => {
+const TestimonalsCard = ({ testimonals }: {
+  testimonals: {
+    profile_url: string,
+    username: string,
+    description: string,
+    rating: number,
+  }
+}): JSX.Element => {
   return (
     <>
       <article className="p-10  shadow w-96 bg-sky-400 rounded">

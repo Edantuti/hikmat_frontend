@@ -6,7 +6,12 @@ import { useFetch } from "../../hooks/fetch";
 import { useSelector } from "react-redux";
 const OrderDetails = (): JSX.Element => {
   const user = useSelector((state: any) => state.auth.userData)
-  const { data } = useFetch<[]>(`${import.meta.env.VITE_BACKEND}/api/orders`, { userid: user.userid })
+  const { data, isLoading } = useFetch<[]>(`${import.meta.env.VITE_BACKEND}/api/orders`, { userid: user.userid })
+  if (isLoading) return (
+    <>
+      <h1 className="flex items-center justify-center">Loading....</h1>
+    </>
+  )
   return (
     <>
       <section className="w-full lg:border rounded lg:m-2">

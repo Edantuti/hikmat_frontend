@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react"
 import { BsShare } from "react-icons/bs"
 import axios from "axios"
-import { setProducts } from "../../slice/CartSlice"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation } from "react-router-dom"
 import { FaRupeeSign } from "react-icons/fa"
 import Cookies from "js-cookie"
+
+import { setProducts } from "../../slice/CartSlice"
 import { changeAuthentication } from "../../slice/AuthSlice"
-export type OfferType = {
-  title: string,
-  description: string
-}
 
 const ProductInfo = (props:
   { id: string, name: string, price: number, rating: number, discount: number, brand: string, category: string, size: string, similar: any, Deals: any, quantity: number }): JSX.Element => {

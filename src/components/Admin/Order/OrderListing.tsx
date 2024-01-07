@@ -5,10 +5,12 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { changeAuthentication } from '../../../slice/AuthSlice'
 import { useFetch } from '../../../hooks/fetch'
-//TODO:Add Toast
-const OrderListing = () => {
-  const { data } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/orders/all`)
 
+const OrderListing = () => {
+  const { data, isLoading } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/orders/all`)
+  if (isLoading) {
+    return <h1 className="flex items-center justify-center text-xl">Loading...</h1>
+  }
   return (
     <>
       <section className="m-2">

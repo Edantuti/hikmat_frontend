@@ -7,7 +7,7 @@ import { AxiosError } from "axios";
 import { useFetch } from "../../../hooks/fetch";
 //TODO:Add Toast
 export default function DealsListing() {
-  const { data: deals, setData: setDeals } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/deals`)
+  const { data: deals, setData: setDeals, isLoading } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/deals`)
   const dispatch = useDispatch();
   function removeDeals(id: string) {
     if (deals)
@@ -22,6 +22,9 @@ export default function DealsListing() {
         }
       }
     )
+  }
+  if (isLoading) {
+    return <h1 className="text-xl flex items-center justify-center">Loading Deals... </h1>
   }
   return (
     <>

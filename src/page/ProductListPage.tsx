@@ -5,15 +5,15 @@ import { useFetchProducts } from "../hooks/products";
 import { useFetch } from "../hooks/fetch";
 
 const ProductListPage: FC = (): JSX.Element => {
-  const loader = useLoaderData() as any
+  const loader = useLoaderData() as { category?: string, brand?: string, offset?: string }
   const { products } = useFetchProducts(loader)
   const [nextPage, setNextPages] = useState<number[]>([]);
-  const { data: brands } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/brands`)
-  const { data: category } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/categories`)
-  const [_, setParams] = useSearchParams();
+  const { data: brands, isLoading: isBrandsLoading } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/brands`)
+  const { data: category, isLoading: isCategoryLoading } = useFetch<any[]>(`${import.meta.env.VITE_BACKEND}/api/categories`)
+  const [_, setParams] = useSearchParams()
   useEffect(() => {
     setPages()
-  }, [])
+  }, [products])
   const setPages = () => {
     let value = [];
     for (let i = 0; i < Math.floor((products.count + 13) / 12); i++) {
@@ -21,7 +21,6 @@ const ProductListPage: FC = (): JSX.Element => {
     }
     setNextPages(value)
   }
-
   function changePage(value: number) {
     setParams([["offset", ((value - 1) * 12) + ""]])
   };
@@ -33,16 +32,17 @@ const ProductListPage: FC = (): JSX.Element => {
           <div className="flex mx-10 overflow-auto gap-2">
             <Link className="px-4 py-1 border bg-gray-100 rounded-full w-fit" to="/product">All</Link>
             {brands && brands.map((obj: any) => (<Link key={obj.id} to={`/product?brand=${obj.name}`} className="px-4 py-1 border bg-gray-100 rounded-full w-fit whitespace-nowrap">{obj.name}</Link>))}
-
-            {!brands && <p>No Brands are present</p>}
+            {isBrandsLoading && <p>Loading Brands</p>}
+            {!brands && !isBrandsLoading && <p>No Brands are present</p>}
           </div>
         </div>
         <div className="mx-12 flex item-center my-2">
           <p className="">Category</p>
           <div className="flex mx-10 overflow-auto gap-2">
             <Link className="px-4 py-1 border bg-gray-100 rounded-full w-fit" to="/product">All</Link>
+            {isCategoryLoading && <p>Loading Category</p>}
             {category && category.map((obj: any) => (<Link key={obj.id} to={`/product?category=${obj.name}`} className="px-4 py-1 border bg-gray-100 rounded-full w-fit whitespace-nowrap">{obj.name}</Link>))}
-            {!category && <p> No Category are present</p>}
+            {!category && !isCategoryLoading && <p> No Category are present</p>}
           </div>
         </div>
         <hr className="my-4" />

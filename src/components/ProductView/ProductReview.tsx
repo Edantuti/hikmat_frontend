@@ -3,10 +3,10 @@ import ProductReviewForm from "./ProductReviewForm";
 import { useSelector } from "react-redux";
 import { FaRegStar, FaStar } from "react-icons/fa";
 
-export default function ProductReview(props: {
+const ProductReview = (props: {
   productid: string;
   reviews: any[];
-}): JSX.Element {
+}): JSX.Element => {
   const [data, setData] = useState<any>([]);
   useEffect(() => {
     setData(props.reviews)
@@ -104,3 +104,4 @@ function ReviewComponent(props: any): JSX.Element {
     </>
   );
 }
+export default ProductReview

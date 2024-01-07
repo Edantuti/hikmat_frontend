@@ -7,7 +7,14 @@ import { useFetchProductByID } from "../hooks/products";
 import { useParams } from "react-router-dom";
 const ProductViewPage: FC = (): JSX.Element => {
   const { productId } = useParams()
-  const { product: productData } = useFetchProductByID(productId as string)
+  const { product: productData, isLoading } = useFetchProductByID(productId as string)
+  if (isLoading) {
+    return (
+      <>
+        <h1>Loading Product Details</h1>
+      </>
+    )
+  }
   return (
     <>
       {productData && <section className="md:flex">

@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ export type FormValues = {
   password: string;
 };
 
-const Login: FC = (): JSX.Element => {
+const Login = (): JSX.Element => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [show, changeShow] = useState<boolean>(false);

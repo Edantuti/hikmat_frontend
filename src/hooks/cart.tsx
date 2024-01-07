@@ -23,6 +23,7 @@ const useFetchCart = (userid: string) => {
   });
   const [outOfStock, setOutOfStock] = React.useState<boolean>(false)
   const [discount, setDiscount] = React.useState<any[]>([])
+  const [isLoading, setIsLoading] = React.useState<boolean>(true)
   React.useEffect(() => {
     axios.get(`${import.meta.env.VITE_BACKEND}/api/cart`, {
       params: {
@@ -32,13 +33,14 @@ const useFetchCart = (userid: string) => {
         Authorization: `Bearer ${Cookies.get("token")}`
       }
     }).then(({ data }) => {
+      setIsLoading(false)
       let item = data.find((item: any) => item.quantity === 0)
       setOutOfStock(item !== undefined)
       dispatch(setProducts(data))
       setDiscount(totalDiscount(data))
     })
   }, [])
-  return { cart, discount, setDiscount, outOfStock, setOutOfStock }
+  return { cart, discount, setDiscount, outOfStock, setOutOfStock, isLoading }
 }
 
 

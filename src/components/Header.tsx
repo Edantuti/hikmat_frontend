@@ -1,13 +1,14 @@
-import { FC, useState } from "react";
+import { useState, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BsCart3 } from "react-icons/bs";
 import { changeAuthentication, setUserData } from "../slice/AuthSlice";
 import { useSelector, useDispatch } from "react-redux";
-// import { useCookies } from "react-cookie"
 import Cookies from "js-cookie";
+import { useOnClickOutside } from 'usehooks-ts'
 
-const Header: FC = (): JSX.Element => {
+const Header = (): JSX.Element => {
   const [visible, changeVisible] = useState(false);
+  const ref = useRef(null)
   const auth = useSelector((state: any) => state.auth.authenticated.value);
   const userData = useSelector((state: any) => state.auth.userData);
   const location = useLocation();
@@ -17,7 +18,7 @@ const Header: FC = (): JSX.Element => {
     dispatch(setUserData({}));
     dispatch(changeAuthentication(false));
   };
-
+  useOnClickOutside(ref, () => { changeVisible(false) })
   return (
     <>
       <header className="flex justify-between md:px-10 mx-auto py-5 border-b-2 border-neutral-300 items-center">
@@ -41,7 +42,7 @@ const Header: FC = (): JSX.Element => {
             </Link>
           )}
           {auth && (
-            <div className="relative" onClick={() => changeVisible(!visible)}>
+            <div ref={ref} className="relative" onClick={() => changeVisible(!visible)}>
               <img loading="lazy"
                 src={userData.profile_url + "?type=low"}
                 alt="profile"
@@ -69,17 +70,19 @@ const Header: FC = (): JSX.Element => {
                     </p>
                   </div>
                 </div>
-                <Link to="/users/" className="text-lg text-center py-2">
-                  My Profile
-                </Link>
-                <Link to="/users/orders" className="text-lg text-center py-2">
-                  My Orders
-                </Link>
-                {userData.admin && (
-                  <Link to="/admin/" className="text-lg text-center py-2">
-                    Admin Dashboard
+                <div className="flex flex-col">
+                  <Link to="/users/" className="text-lg text-center py-2" >
+                    My Profile
                   </Link>
-                )}
+                  <Link to="/users/orders" className="text-lg text-center py-2">
+                    My Orders
+                  </Link>
+                  {userData.admin && (
+                    <Link to="/admin/" className="text-lg text-center py-2" >
+                      Admin Dashboard
+                    </Link>
+                  )}
+                </div>
                 <button
                   onClick={() => logOut()}
                   className="w-36 bg-slate-200 my-auto py-2 px-4 rounded-full mx-auto mb-2"

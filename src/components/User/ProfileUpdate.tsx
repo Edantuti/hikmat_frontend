@@ -68,11 +68,11 @@ export default function ProfileUpdate() {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col space-y-2"
-        >
+        >{/* TODO: Responsive work pending*/}
+
           <div className="relative">
             <input
-              type="file"
-              className="opacity-0 absolute z-10  w-36 h-36 md:left-24 left-44 right-[50%]"
+              type="file" className="opacity-0 absolute z-10  w-36 h-36 md:left-24 sm:left-60 xs:left left-20 right-[50%]"
               onChange={(e) => fileChanger(e)}
             />
             <img
