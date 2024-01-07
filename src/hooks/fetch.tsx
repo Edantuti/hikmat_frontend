@@ -20,7 +20,7 @@ const useFetch = <T,>(url: string, params?: any) => {
         console.error(error)
       setErrors(error)
     })
-  }, [params, url])
+  }, [])
   return { data, isLoading, setData, errors }
 }
 
