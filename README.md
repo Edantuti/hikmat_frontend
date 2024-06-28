@@ -14,4 +14,4 @@ It was originally meant for a client, who was interested in expanding his busine
 2. Optimizing the react code.
 
 
-Backend URL - (https://github.com/Edantuti/hikmat_backend)[Backend_url]
+Backend URL - [Backend_url](https://github.com/Edantuti/hikmat_backend)
