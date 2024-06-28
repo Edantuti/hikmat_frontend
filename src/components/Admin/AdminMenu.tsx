@@ -1,38 +1,42 @@
-import { Dispatch, SetStateAction } from "react";
-import { Link } from "react-router-dom";
+import { Dispatch, SetStateAction } from 'react';
+import { Link } from 'react-router-dom';
 
-const AdminMenu = (prop: { visibility: boolean, changeVisibility: Dispatch<SetStateAction<boolean>> }): JSX.Element => {
+const AdminMenu = (prop: {
+  visibility: boolean;
+  changeVisibility: Dispatch<SetStateAction<boolean>>;
+}): JSX.Element => {
   return (
     <>
       <nav
-        className={`fixed mb-4 sm:w-96 w-full h-full top-0 transition-all shadow-lg z-10 bg-white flex items-center border-l-2  ${prop.visibility ? `right-0` : `sm:-right-96 -right-[50rem] `
-          }`}
+        className={`fixed top-0 z-10 mb-4 flex h-full w-full items-center border-l-2 bg-white shadow-lg transition-all sm:w-96  ${
+          prop.visibility ? `right-0` : `-right-[50rem] sm:-right-96 `
+        }`}
       >
-        <div className="mx-auto flex flex-col text-xl text-center">
+        <div className='mx-auto flex flex-col text-center text-xl'>
           <Link
-            to="/admin"
+            to='/admin'
             onClick={() => {
               prop.changeVisibility(!prop.visibility);
             }}
-            className="px-2 py-1"
+            className='px-2 py-1'
           >
             Admin dashboard
           </Link>
           <Link
-            to="/admin/orders"
+            to='/admin/orders'
             onClick={() => {
               prop.changeVisibility(!prop.visibility);
             }}
-            className="px-2 py-1"
+            className='px-2 py-1'
           >
             Orders
           </Link>
           <Link
-            to="/"
+            to='/'
             onClick={() => {
               prop.changeVisibility(!prop.visibility);
             }}
-            className="px-2 py-1"
+            className='px-2 py-1'
           >
             Home Page
           </Link>

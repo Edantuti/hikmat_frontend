@@ -1,16 +1,16 @@
-
 const SocialSection = (): JSX.Element => {
   return (
     <>
-      <section className="h-[60vh]" id="social">
-        <div className="w-[80%] mx-auto">
-          <h2 className="text-center text-4xl py-4">Follow Us On Instagram</h2>
-          <p className="text-center w-[70%] mx-auto">Social media handle which everyone uses</p>
+      <section className='h-[60vh]' id='social'>
+        <div className='mx-auto w-[80%]'>
+          <h2 className='py-4 text-center text-4xl'>Follow Us On Instagram</h2>
+          <p className='mx-auto w-[70%] text-center'>
+            Social media handle which everyone uses
+          </p>
         </div>
-      </section >
-
+      </section>
     </>
-  )
-}
+  );
+};
 
-export default SocialSection
+export default SocialSection;

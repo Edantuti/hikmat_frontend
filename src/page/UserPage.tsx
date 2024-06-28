@@ -1,8 +1,8 @@
-import { FC } from "react";
-import { useSelector } from "react-redux";
-import PageRedirect from "../components/Auth/PageRedirect";
-import UserNavigation from "../components/User/UserNavigation";
-import { Outlet } from "react-router-dom";
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import PageRedirect from '../components/Auth/PageRedirect';
+import UserNavigation from '../components/User/UserNavigation';
+import { Outlet } from 'react-router-dom';
 
 //TODO: REMOVE FC
 const UserPage: FC = (): JSX.Element => {
@@ -11,7 +11,7 @@ const UserPage: FC = (): JSX.Element => {
   return (
     <>
       {auth ? (
-        <div className="flex flex-col lg:flex-row">
+        <div className='flex flex-col lg:flex-row'>
           <UserNavigation />
           <Outlet />
         </div>

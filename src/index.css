@@ -3,20 +3,20 @@
 @tailwind components;
 @tailwind utilities;
 
-
-.button{
-    @apply bg-slate-100 py-2 px-6 hover:text-white hover:bg-[#004449] transition-colors rounded shadow;
+.button {
+  @apply rounded bg-slate-100 px-6 py-2 shadow transition-colors hover:bg-[#004449] hover:text-white;
 }
 
-.inputField{
-    @apply p-1 rounded font-poppins border shadow-inner focus:outline-none focus:border-b focus:border-b-blue-400 transition-colors;
+.inputField {
+  @apply rounded border p-1 font-poppins shadow-inner transition-colors focus:border-b focus:border-b-blue-400 focus:outline-none;
 }
-input::-webkit-inner-spin-button, input::-webkit-outer-spin-button{
-  appearance:none;
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+  appearance: none;
 }
 
-.smallcarousel .swiper-slide-thumb-active{
-    @apply border-blue-400 border p-2 rounded;
+.smallcarousel .swiper-slide-thumb-active {
+  @apply rounded border border-blue-400 p-2;
 }
 
 .slick-next {
