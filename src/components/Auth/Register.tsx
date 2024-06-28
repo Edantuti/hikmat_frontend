@@ -58,7 +58,7 @@ const Register = (): JSX.Element => {
         changeError('');
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         if (error.code === 'ERR_BAD_REQUEST') {
           changeExists(true);
           changeError('');
