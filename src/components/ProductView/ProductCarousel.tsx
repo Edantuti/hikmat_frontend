@@ -23,8 +23,8 @@ const ProductCarousel = (props: { image_urls: string[] }): JSX.Element => {
               thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
           }}
         >
-          {props.image_urls.map((obj, key) => (
-            <SwiperSlide key={key} className='rounded bg-cover bg-center'>
+          {props.image_urls.map((obj) => (
+            <SwiperSlide key={obj} className='rounded bg-cover bg-center'>
               <img
                 loading='lazy'
                 src={`${obj}`}
@@ -43,8 +43,8 @@ const ProductCarousel = (props: { image_urls: string[] }): JSX.Element => {
           watchSlidesProgress={true}
           freeMode={true}
         >
-          {props.image_urls.map((obj, key) => (
-            <SwiperSlide key={key} className='p-2'>
+          {props.image_urls.map((obj) => (
+            <SwiperSlide key={obj} className='p-2'>
               <img loading='lazy' src={obj} className='w-20 rounded' alt='' />
             </SwiperSlide>
           ))}

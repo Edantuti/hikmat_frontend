@@ -2,8 +2,7 @@ import { useForm } from 'react-hook-form';
 import { ChangeEvent, useState } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUserData } from '../../slice/AuthSlice';
 import AddressUpdateForm from './AddressUpdateForm';
 import { ToastContainer, toast } from 'react-toastify';
@@ -72,64 +71,62 @@ export default function ProfileUpdate() {
     changeFileUrl(URL.createObjectURL(event.target.files[0]));
   };
   return (
-    <>
-      <section className='gap-2 md:flex'>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className='flex flex-col space-y-2'
-        >
-          {/* TODO: Responsive work pending*/}
+    <section className='gap-2 md:flex'>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='flex flex-col space-y-2'
+      >
+        {/* TODO: Responsive work pending*/}
 
-          <div className='relative'>
-            <input
-              type='file'
-              className='xs:left absolute left-20  right-[50%] z-10 h-36 w-36 opacity-0 sm:left-60 md:left-24'
-              onChange={(e) => fileChanger(e)}
-            />
-            <img
-              src={fileUrl}
-              alt='profile'
-              className='mx-auto  h-36 w-36 rounded-full p-2'
-            />
-            <p className='py-4 text-center font-poppins text-sm'>
-              Click to change the profile picture
-            </p>
-          </div>
-          <p>First Name:</p>
+        <div className='relative'>
           <input
-            type='text'
-            className='inputField'
-            placeholder='First Name'
-            {...register('first', { required: true })}
+            type='file'
+            className='xs:left absolute left-20  right-[50%] z-10 h-36 w-36 opacity-0 sm:left-60 md:left-24'
+            onChange={(e) => fileChanger(e)}
           />
-          <p>Last Name:</p>
-          <input
-            type='text'
-            className='inputField'
-            placeholder='Last Name'
-            {...register('last', { required: true })}
+          <img
+            src={fileUrl}
+            alt='profile'
+            className='mx-auto  h-36 w-36 rounded-full p-2'
           />
-          <p>Email Address:</p>
-          <input
-            type='email'
-            className='inputField'
-            placeholder='Email Address'
-            {...register('email', { required: true })}
-          />
-          <p>Phone Number:</p>
-          <input
-            type='text'
-            className='inputField'
-            placeholder='Phone Number'
-            {...register('phone', { required: true })}
-          />
-          <button type='submit' className='button'>
-            Submit
-          </button>
-        </form>
-        <AddressUpdateForm />
-        <ToastContainer theme='colored' />
-      </section>
-    </>
+          <p className='py-4 text-center font-poppins text-sm'>
+            Click to change the profile picture
+          </p>
+        </div>
+        <p>First Name:</p>
+        <input
+          type='text'
+          className='inputField'
+          placeholder='First Name'
+          {...register('first', { required: true })}
+        />
+        <p>Last Name:</p>
+        <input
+          type='text'
+          className='inputField'
+          placeholder='Last Name'
+          {...register('last', { required: true })}
+        />
+        <p>Email Address:</p>
+        <input
+          type='email'
+          className='inputField'
+          placeholder='Email Address'
+          {...register('email', { required: true })}
+        />
+        <p>Phone Number:</p>
+        <input
+          type='text'
+          className='inputField'
+          placeholder='Phone Number'
+          {...register('phone', { required: true })}
+        />
+        <button type='submit' className='button'>
+          Submit
+        </button>
+      </form>
+      <AddressUpdateForm />
+      <ToastContainer theme='colored' />
+    </section>
   );
 }

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import Cookies from 'js-cookie';
 import { toast } from 'react-toastify';
+import { nanoid } from '@reduxjs/toolkit';
 
 export default function ProductReviewForm(props: {
   productid: string;
@@ -60,28 +61,26 @@ export default function ProductReviewForm(props: {
     setStars(copyValue);
   }
   return (
-    <>
-      <div className='m-2 ml-0 rounded  p-2'>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <textarea
-            className='h-20 w-full rounded border p-2'
-            placeholder='Enter your Review'
-            {...register('description', { required: true })}
-          />
-          {errors.description && <p>Empty Review is not acceptable.</p>}
-          <span className='flex items-center'>
-            Rating:
-            {starValues.map((starStatus: boolean, index: number) =>
-              starStatus ? (
-                <FaStar key={index} onClick={() => setRating(index)} />
-              ) : (
-                <FaRegStar key={index} onClick={() => setRating(index)} />
-              )
-            )}
-          </span>
-          <input type='submit' className='button' value='Submit your review' />
-        </form>
-      </div>
-    </>
+    <div className='m-2 ml-0 rounded  p-2'>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <textarea
+          className='h-20 w-full rounded border p-2'
+          placeholder='Enter your Review'
+          {...register('description', { required: true })}
+        />
+        {errors.description && <p>Empty Review is not acceptable.</p>}
+        <span className='flex items-center'>
+          Rating:
+          {starValues.map((starStatus: boolean, index: number) =>
+            starStatus ? (
+              <FaStar key={nanoid()} onClick={() => setRating(index)} />
+            ) : (
+              <FaRegStar key={nanoid()} onClick={() => setRating(index)} />
+            )
+          )}
+        </span>
+        <input type='submit' className='button' value='Submit your review' />
+      </form>
+    </div>
   );
 }

@@ -31,22 +31,20 @@ export default function CategoryAdding() {
     }
   };
   return (
-    <>
-      <section className='flex max-h-full min-h-screen items-center justify-center'>
-        <form onSubmit={handleSubmit(onSubmit)} className='flex w-96 flex-col'>
-          <h2 className='text-center text-2xl'>New Category</h2>
-          <input
-            type='text'
-            placeholder='Enter your Category Name'
-            className='inputField my-2'
-            {...register('name', { required: true })}
-          />
-          {errors.name && <p>You cannot submit a empty Category name</p>}
-          <input type='submit' className='button' value='Submit' />
-        </form>
+    <section className='flex max-h-full min-h-screen items-center justify-center'>
+      <form onSubmit={handleSubmit(onSubmit)} className='flex w-96 flex-col'>
+        <h2 className='text-center text-2xl'>New Category</h2>
+        <input
+          type='text'
+          placeholder='Enter your Category Name'
+          className='inputField my-2'
+          {...register('name', { required: true })}
+        />
+        {errors.name && <p>You cannot submit a empty Category name</p>}
+        <input type='submit' className='button' value='Submit' />
+      </form>
 
-        <ToastContainer theme='colored' />
-      </section>
-    </>
+      <ToastContainer theme='colored' />
+    </section>
   );
 }

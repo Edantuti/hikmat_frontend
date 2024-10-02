@@ -249,7 +249,7 @@ const ProductManipulator: FC = (): JSX.Element => {
             <div className='space-y-5'>
               {photos.map((photo, id: number) => (
                 <div
-                  key={id}
+                  key={photo.toString()}
                   className='relative flex items-center rounded border'
                 >
                   <img

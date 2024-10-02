@@ -28,21 +28,19 @@ const TestimonalsSection = (): JSX.Element => {
   ];
 
   return (
-    <>
-      <section className='h-screen bg-gradient-to-t from-[#007A8C] via-[#007E74] to-[#008358] py-10 text-white'>
-        <h2 className='py-6 text-center font-volkhov text-4xl'>
-          This Is What Our Customers Say
-        </h2>
-        <p className='mx-auto w-[70%] text-center'>
-          Some amazing reviews from our customers.
-        </p>
-        <div className='mx-auto my-40 flex w-[40%] space-x-10 text-black'>
-          {TestimonalsObjects.map((ob, id) => (
-            <TestimonalsCard key={id} testimonals={ob} />
-          ))}
-        </div>
-      </section>
-    </>
+    <section className='h-screen bg-gradient-to-t from-[#007A8C] via-[#007E74] to-[#008358] py-10 text-white'>
+      <h2 className='py-6 text-center font-volkhov text-4xl'>
+        This Is What Our Customers Say
+      </h2>
+      <p className='mx-auto w-[70%] text-center'>
+        Some amazing reviews from our customers.
+      </p>
+      <div className='mx-auto my-40 flex w-[40%] space-x-10 text-black'>
+        {TestimonalsObjects.map((ob) => (
+          <TestimonalsCard key={ob.username} testimonals={ob} />
+        ))}
+      </div>
+    </section>
   );
 };
 

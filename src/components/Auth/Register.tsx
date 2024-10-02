@@ -15,7 +15,6 @@ export type FormValues = {
   password: string;
   phone: string;
 };
-//TODO:REMOVE FC
 const Register = (): JSX.Element => {
   const {
     register,
@@ -33,14 +32,16 @@ const Register = (): JSX.Element => {
   const [show, changeShow] = useState<boolean>(false);
   const [confirmShow, changeConfirmShow] = useState<boolean>(false);
   const onSubmit = async (data: FormValues) => {
-    let formdata = new FormData();
+    const formdata = new FormData();
     changeExists(false);
     changeError('');
     const png = avatarfile.png();
-    formdata.append(
-      'profile_url',
-      file ? file : new Blob([await png.toArrayBuffer()], { type: 'image/png' })
-    );
+    if (!file)
+      formdata.append(
+        'profile_url',
+        new Blob([await png.toArrayBuffer()], { type: 'image/png' })
+      );
+    else formdata.append('profile_url', file);
     formdata.append('firstName', data.first);
     formdata.append('lastName', data.last);
     formdata.append('email', data.email);
@@ -128,9 +129,10 @@ const Register = (): JSX.Element => {
           placeholder='Email'
           {...register('email', {
             required: 'Enter your email',
-            pattern:
-              /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i ||
-              'Enter a valid email address',
+            pattern: {
+              value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+              message: 'Enter a valid email address',
+            },
           })}
         />
         {errors.email && <p>{errors.email.type}</p>}
@@ -145,8 +147,11 @@ const Register = (): JSX.Element => {
               value: 8,
               message: 'Password should have minimum 8 characters',
             },
-            pattern:
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i,
+            pattern: {
+              value:
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i,
+              message: 'Your password is weak',
+            },
           }}
           show={show}
           changeShow={changeShow}
@@ -190,7 +195,7 @@ const Register = (): JSX.Element => {
           placeholder='Phone Number along with your country code'
           {...register('phone', {
             required: 'Enter your Phone Number',
-            pattern: /^^\+[1-9]{1}[0-9]{3,14}$/i,
+            pattern: /^^\+[1-9]\d{3,14}$/i,
           })}
         />
         {errors?.phone?.type === 'required' && (

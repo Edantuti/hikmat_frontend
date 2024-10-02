@@ -1,9 +1,8 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { setProducts } from '../slice/CartSlice';
-import { useSelector } from 'react-redux';
 
 function totalDiscount(data: any) {
   return data.map((current: any) => {

@@ -53,19 +53,17 @@ export default function VerifyPage() {
     }
   }
   return (
-    <>
-      <section className='flex h-[90vh] items-center justify-center'>
-        {verified ? (
-          <div>
-            <p className='text-lg font-bold'>You are now verified.</p>
-            <p className='text-lg font-bold'>
-              Redirecting you to the home page, in 5 seconds.
-            </p>
-          </div>
-        ) : (
-          <p className='text-xl font-semibold'>Invalid Verification Token</p>
-        )}
-      </section>
-    </>
+    <section className='flex h-[90vh] items-center justify-center'>
+      {verified ? (
+        <div>
+          <p className='text-lg font-bold'>You are now verified.</p>
+          <p className='text-lg font-bold'>
+            Redirecting you to the home page, in 5 seconds.
+          </p>
+        </div>
+      ) : (
+        <p className='text-xl font-semibold'>Invalid Verification Token</p>
+      )}
+    </section>
   );
 }

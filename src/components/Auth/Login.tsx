@@ -22,6 +22,7 @@ const Login = (): JSX.Element => {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<FormValues>({
     reValidateMode: 'onBlur',
@@ -84,9 +85,10 @@ const Login = (): JSX.Element => {
             placeholder='email'
             {...register('email', {
               required: true,
-              pattern:
-                /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i ||
-                'Enter a valid email address',
+              pattern: {
+                value: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+                message: 'Enter a valid email address',
+              },
             })}
           />
           {errors?.email && (

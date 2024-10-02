@@ -31,20 +31,18 @@ export default function BrandAdding() {
     }
   };
   return (
-    <>
-      <section>
-        <form onSubmit={handleSubmit(onSubmit)} className='flex w-96 flex-col'>
-          <input
-            type='text'
-            placeholder='Enter your brand Name'
-            className='inputField my-2'
-            {...register('name', { required: true })}
-          />
-          {errors.name && <p>You cannot submit a empty brand name</p>}
-          <input type='submit' className='button' value='Submit' />
-        </form>
-        <ToastContainer theme='colored' />
-      </section>
-    </>
+    <section>
+      <form onSubmit={handleSubmit(onSubmit)} className='flex w-96 flex-col'>
+        <input
+          type='text'
+          placeholder='Enter your brand Name'
+          className='inputField my-2'
+          {...register('name', { required: true })}
+        />
+        {errors.name && <p>You cannot submit a empty brand name</p>}
+        <input type='submit' className='button' value='Submit' />
+      </form>
+      <ToastContainer theme='colored' />
+    </section>
   );
 }
