@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useState } from 'react';
 import ProductReviewForm from './ProductReviewForm';
 import { useSelector } from 'react-redux';
 import { FaRegStar, FaStar } from 'react-icons/fa';
