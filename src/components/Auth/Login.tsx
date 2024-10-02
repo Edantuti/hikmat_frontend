@@ -22,7 +22,6 @@ const Login = (): JSX.Element => {
   const {
     register,
     handleSubmit,
-    getValues,
     formState: { errors },
   } = useForm<FormValues>({
     reValidateMode: 'onBlur',
